@@ -225,6 +225,8 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                                         /**     이미지 업로드 완료    **/
                                         progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
                                         finish();
+
+                                        Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
 //                                        final DialogUseful dialogUseful = new DialogUseful("ad_complete",AdRequestBossAct.this);
 //                                        dialogUseful.setCancelable(true);
 //                                        dialogUseful.btn_ad_complete.setOnClickListener(new View.OnClickListener() {
