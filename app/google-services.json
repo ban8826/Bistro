@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1031581992054",
+    "project_id": "bistro-5bc79",
+    "storage_bucket": "bistro-5bc79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031581992054:android:329117affab5fd8810cb57",
+        "android_client_info": {
+          "package_name": "com.bistro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031581992054-6lv6p1db8nrn6qcch51mle74bk0fd2if.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbFKS_8uVGaPyYe2LHBiyfLscpvOIFo7w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1031581992054-6lv6p1db8nrn6qcch51mle74bk0fd2if.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
