@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="match_parent"
+        android:id="@+id/iv_image"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_margin="@dimen/ten"
+        android:src="@drawable/img_food"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_title"
+        android:text="여기 제가 자주가는데 맛있어요"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/fifteen"
+        android:layout_marginLeft="@dimen/five"
+        android:layout_marginRight="@dimen/ten"
+        app:layout_constraintTop_toTopOf="@id/iv_image"
+        app:layout_constraintLeft_toRightOf="@id/iv_image"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_store_name"
+        android:text="서교타르트 카페"
+        android:textColor="@color/orange"
+        android:textSize="@dimen/spFourteen"
+        android:layout_marginLeft="@dimen/ten"
+        android:layout_marginRight="@dimen/ten"
+        android:layout_marginTop="@dimen/three"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintLeft_toRightOf="@id/iv_image"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_like"
+        android:text="5"
+        android:textColor="@color/black"
+        android:textSize="@dimen/spFifteen"
+        android:layout_marginRight="@dimen/twenty"
+        app:layout_constraintBottom_toBottomOf="@id/iv_image"
+        app:layout_constraintRight_toRightOf="parent"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_like"
+        android:src="@drawable/ic_baseline_thumb_up_24"
+        android:layout_marginLeft="@dimen/ten"
+        android:layout_marginRight="@dimen/five"
+        app:layout_constraintBottom_toBottomOf="@id/iv_image"
+        app:layout_constraintRight_toLeftOf="@id/tv_like"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_light"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

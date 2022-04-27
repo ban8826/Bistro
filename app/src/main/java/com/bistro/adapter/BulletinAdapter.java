@@ -1,15 +1,12 @@
 package com.bistro.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,8 +19,6 @@ import com.bistro.activity.ShowPostAct;
 import com.bistro.database.SharedManager;
 import com.bistro.model.PostModel;
 import com.bumptech.glide.Glide;
-import com.google.android.datatransport.runtime.dagger.multibindings.StringKey;
-import com.google.android.material.shadow.ShadowRenderer;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -36,7 +31,6 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
     private ArrayList<PostModel> list_post;
     private ArrayList<String> list_key;
     private Context mContext;
-    private DatabaseReference mDatabaseRef;
     private StorageReference storageReference;
     private String randomKey;
     private String type;  // 게시판인지 즐겨찾기인지 구분하는 변수
@@ -46,7 +40,6 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
     public BulletinAdapter(Fragment fragment, ArrayList list, ArrayList key, String type) {
         list_post = list;
         list_key = key;
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("bistro");
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bistro-5bc79.appspot.com");
         this.randomKey = randomKey;
         this.fragment = fragment;
@@ -58,7 +51,7 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
     public BoardViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.list_food, parent, false);
+        View view = inflater.inflate(R.layout.list_post, parent, false);
         return new BoardViewHolder(view);
     }
 
@@ -118,6 +111,7 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
                 int adapterPosition = getAdapterPosition();
                 String key = list_key.get(adapterPosition);
 
+                // 즐겨찾기 일경우
                 if(type.equals("favorite"))
                 {
                     Intent intent = new Intent(fragment.getActivity(), FavoriteAct.class);
@@ -126,6 +120,7 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
                     fragment.startActivity(intent);
                 }
 
+                // 메인 게시판일경우
                 else {
                     Intent intent = new Intent(fragment.getActivity(), ShowPostAct.class);
                     intent.putExtra("post", list_post.get(adapterPosition));

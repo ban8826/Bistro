@@ -173,14 +173,48 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/twenty"
                 android:textStyle="bold"
+                android:padding="@dimen/ten"
                 android:background="@drawable/border_black_10"
                 app:layout_constraintTop_toBottomOf="@id/tv_menu" />
+
+
+            <TextView
+                android:id="@+id/tv_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/twenty"
+                android:layout_marginTop="@dimen/thirty"
+                android:text="관련글"
+                android:textColor="@color/black"
+                android:textSize="@dimen/twenty"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:id="@+id/view_bottom"
+                android:background="@color/gray_light"
+                app:layout_constraintTop_toBottomOf="@id/tv_bottom"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_related"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:background="@color/white"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@id/view_bottom"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
 
+    //하단 공감/ 비공감 콘스트레인뷰
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_bottom"
         android:layout_width="match_parent"

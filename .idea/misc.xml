@@ -22,7 +22,7 @@
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_main.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_register.xml" value="0.15677083333333333" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_setting.xml" value="0.15260416666666668" />
-        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_show_post.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_show_post.xml" value="0.22" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_splash.xml" value="0.15677083333333333" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_write_post.xml" value="0.22" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/activity_main.xml" value="0.17916666666666667" />
@@ -33,6 +33,8 @@
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/fragment_my_info.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/list_food.xml" value="0.22" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/list_picture.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/list_post.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/list_related_post.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/pagerview_layout.xml" value="0.14270833333333333" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/toast_layout.xml" value="0.15260416666666668" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/menu/bottom_menu.xml" value="0.17916666666666667" />

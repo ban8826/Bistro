@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,12 +14,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bistro.R;
+import com.bistro.adapter.BulletinAdapter;
+import com.bistro.adapter.RelatedAdapter;
 import com.bistro.adapter.ViewPagerAdapter;
 import com.bistro.database.SharedManager;
+import com.bistro.fragment.ListFragment;
 import com.bistro.model.PostLikeModel;
 import com.bistro.model.PostModel;
 import com.bistro.model.UserLikeModel;
@@ -48,12 +53,16 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private ArrayList imageList;
+    private ArrayList<String> list_key;
     private ArrayList<PostModel> list_post;
     private ViewPager viewPager ;
     private TabLayout  tabLayout_dot;
     private ArrayList<UserLikeModel> list_user_like;
     private ArrayList<PostLikeModel> list_post_like, list_post_dislike;
     private boolean b_favorite;
+
+    private RecyclerView rv_related;
+    private RelatedAdapter relatedAdapter;
 
     boolean like_exist, dislike_exist ;
     @Override
@@ -82,13 +91,14 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
 
         userKey = SharedManager.read(SharedManager.AUTH_TOKEN,"");
         list_post = new ArrayList<>();
-
+        list_key = new ArrayList<>();
 
         tv_title.setText(title);
         tv_store_name.setText(store_name);
         tv_menu.setText(menu);
         tv_content.setText(content);
 
+        rv_related = findViewById(R.id.rv_related);
 
         iv_back = findViewById(R.id.iv_back_arrow);
         iv_back.setOnClickListener(this);
@@ -115,6 +125,9 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
 
         /** 스토리지에서 사진 불로오는 중요 함수 **/
         getImages();
+
+        /** 파베에서 관련글 데이터 가져오는 부분 **/
+        getFirebaseBoardList();
     }
 
 
@@ -318,5 +331,39 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         } else {
 
         }
+    }
+
+
+    // 관련글에 들어갈 데이터를 파베에서 가져와야하는 부분
+    private void getFirebaseBoardList() {
+        // load firebase db list
+
+        databaseReference.child("postInfo").orderByChild("storeName").equalTo(store_name).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                list_post.clear();
+                list_key.clear();
+                if (dataSnapshot.getChildrenCount() != 0) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        PostModel postModel = snapshot.getValue(PostModel.class);
+                        // 최신글 역순 정렬을 위한 역순 add
+                        list_post        .add(0, postModel);
+                        list_key.add(0, snapshot.getKey());
+                    }
+
+                    relatedAdapter = new RelatedAdapter(ShowPostAct.this, list_post, list_key);
+                    rv_related.setAdapter(relatedAdapter);
+                    relatedAdapter.notifyDataSetChanged();
+//                   setProgressDialog(null, false);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(getClass().getSimpleName(), "onCancelled Database error", error.toException().fillInStackTrace());
+            }
+        });
+
     }
 }
