@@ -50,6 +50,12 @@
                     tools:ignore="ManifestResource" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.NaverMapAct"/>
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="ut4zsckotd" />
     </application>
 
 </manifest>

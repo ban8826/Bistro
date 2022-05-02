@@ -26,13 +26,13 @@ import java.util.ArrayList;
 
 public class RelatedAdapter extends RecyclerView.Adapter<RelatedAdapter.BoardViewHolder> {
 
-    private ArrayList<PostModel> list_post;
-    private ArrayList<String> list_key;
+    private final ArrayList<PostModel> list_post;
+    private final ArrayList<String> list_key;
     private Context mContext;
-    private StorageReference storageReference;
+    private final StorageReference storageReference;
     private String randomKey;
     private String type;  // 게시판인지 즐겨찾기인지 구분하는 변수
-    private Activity activity;
+    private final Activity activity;
 
 
     public RelatedAdapter (Activity activity, ArrayList list, ArrayList key) {
@@ -76,7 +76,7 @@ public class RelatedAdapter extends RecyclerView.Adapter<RelatedAdapter.BoardVie
 
     @Override
     public int getItemCount() {
-        // 관련글을 3개로 제한하는 부분. 오류나면 고칠것 . 2022.4.27 
+        // 관련글을 3개로 제한하는 부분. 오류나면 고칠것 . 2022.4.27
         if(list_post.size() > 3)
         {
           return 3;
