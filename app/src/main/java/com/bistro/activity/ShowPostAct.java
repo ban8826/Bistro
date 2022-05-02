@@ -48,7 +48,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
     private Context context;
     private Intent intent;
     private PostModel postModel;
-    private TextView tv_title, tv_menu, tv_nickName, tv_store_name, tv_content;
+    private TextView tv_title, tv_menu, tv_nickName, tv_store_name, tv_content, tv_map;
     private String title, store_name, menu, content, key, userKey, post_id;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
@@ -83,6 +83,8 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         tv_content = findViewById(R.id.tv_content);
         tv_title = findViewById(R.id.tv_title);
         tv_store_name = findViewById(R.id.tv_store_name);
+        tv_map = findViewById(R.id.tv_map);
+        tv_map.setOnClickListener(this);
 
         title = postModel.getTitle();
         store_name = postModel.getStoreName();
@@ -291,6 +293,13 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
                     public void onCancelled(@NonNull DatabaseError error) { }
                 });
                 break;
+
+            case R.id.tv_map:
+
+                Intent intent = new Intent(context, NaverMapAct.class);
+                startActivity(intent);
+
+                 break;
         }
     }
 
@@ -299,7 +308,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         if (storageReference != null) {
 
             imageList = new ArrayList();
-            final String acaPicName[] = new String[6];
+            final String[] acaPicName = new String[6];
             String userName = SharedManager.read(SharedManager.USER_NAME,"");
             String fileName = userName + postModel.getDate();
 
