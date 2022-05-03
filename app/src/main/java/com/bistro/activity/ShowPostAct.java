@@ -125,7 +125,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         tabLayout_dot = findViewById(R.id.tab_layout2);
         tabLayout_dot.setupWithViewPager(viewPager, true);
 
-        /** 스토리지에서 사진 불로오는 중요 함수 **/
+        /** 스토리지에서 사진 불러오는 중요 함수 **/
         getImages();
 
         /** 파베에서 관련글 데이터 가져오는 부분 **/

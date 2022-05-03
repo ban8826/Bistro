@@ -5,6 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_top"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
     <ImageView
         android:id="@+id/btn_setting"
         android:layout_width="40dp"
@@ -28,4 +38,150 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btn_setting" />
 
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/gray_light2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    // 탑 아래에 스크롤뷰 (메인)
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbarThumbVertical="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/const_top"
+        app:layout_constraintVertical_bias="1.0"
+        tools:layout_editor_absoluteX="-28dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/const_profile"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent">
+
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/iv_profile"
+                    android:src="@drawable/ic_baseline_face_24"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_margin="@dimen/ten"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:id="@+id/tv_nickName"
+                    android:text="닉네임"
+                    android:textSize="@dimen/twenty"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="@dimen/ten"
+                    android:textStyle="bold"
+                    android:gravity="center_vertical"
+                    app:layout_constraintTop_toTopOf="@id/iv_profile"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                    app:layout_constraintLeft_toRightOf="@id/iv_profile"
+                    app:layout_constraintRight_toRightOf="parent"/>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_light2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            // 공감순위 콘스트
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/const_rank"
+                app:layout_constraintTop_toBottomOf="@id/const_profile"
+                app:layout_constraintLeft_toLeftOf="parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tv_rank"
+                    android:text="공감 순위"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/twentyFive"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="@dimen/ten"
+                    android:paddingLeft="@dimen/thirty"
+                   />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_light2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            // 설정 콘스트
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/const_setting"
+                app:layout_constraintTop_toBottomOf="@id/const_rank"
+                app:layout_constraintLeft_toLeftOf="parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tv_setting"
+                    android:text="설정"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/twentyFive"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="@dimen/ten"
+                    android:paddingLeft="@dimen/thirty"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_light2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            // 개인정보보호 콘스트
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/const_privacy"
+                app:layout_constraintTop_toBottomOf="@id/const_setting"
+                app:layout_constraintLeft_toLeftOf="parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tv_privacy"
+                    android:text="개인정보보호"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/twentyFive"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="@dimen/ten"
+                    android:paddingLeft="@dimen/thirty"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_light2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
