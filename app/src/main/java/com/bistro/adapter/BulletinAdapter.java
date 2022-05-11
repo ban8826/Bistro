@@ -2,11 +2,14 @@ package com.bistro.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,6 +20,7 @@ import com.bistro.R;
 import com.bistro.activity.FavoriteAct;
 import com.bistro.activity.ShowPostAct;
 import com.bistro.database.SharedManager;
+import com.bistro.fragment.ListFragment;
 import com.bistro.model.PostModel;
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DatabaseReference;
@@ -24,18 +28,30 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardViewHolder> {
 
     private ArrayList<PostModel> list_post;
-    private ArrayList<String> list_key;
+    private final ArrayList<String> list_key;
+    private ArrayList<Uri> list_uri;
     private Context mContext;
-    private StorageReference storageReference;
+    private final StorageReference storageReference;
     private String randomKey;
-    private String type;  // 게시판인지 즐겨찾기인지 구분하는 변수
-    private Fragment fragment;
+    private final String type;  // 게시판인지 즐겨찾기인지 구분하는 변수
+    private final Fragment fragment;
+private ListFragment.LikeInterface likeInterface;
 
+    public BulletinAdapter(Fragment fragment, ArrayList list, ArrayList list_uri, ArrayList key, String type) {
+        list_post = list;
+        list_key = key;
+        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bistro-5bc79.appspot.com");
+        this.randomKey = randomKey;
+        this.fragment = fragment;
+        this.type = type;
+        this.list_uri = list_uri;
+    }
 
     public BulletinAdapter(Fragment fragment, ArrayList list, ArrayList key, String type) {
         list_post = list;
@@ -44,6 +60,7 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
         this.randomKey = randomKey;
         this.fragment = fragment;
         this.type = type;
+
     }
 
     @NonNull
@@ -61,19 +78,20 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
         holder.tv_title.setText(list_post.get(position).getTitle());
         holder.tv_store_name.setText(list_post.get(position).getStoreName());
         holder.tv_like.setText(list_post.get(position).getLike());
+        Glide.with(mContext).load(list_uri.get(position)).into(holder.iv_img);
 
-        if(storageReference!=null)
-        {
-            String nickName = SharedManager.read(SharedManager.USER_NAME, "");
-            String fileName = nickName + list_post.get(position).getDate();
-            String name_img = nickName + '1';
-
-            storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
-
-                //다운로드 URL이 파라미터로 전달되어 옴.
-                Glide.with(mContext).load(uri).into(holder.iv_img);
-            });
-        }
+//        if(storageReference!=null)
+//        {
+//            String nickName = SharedManager.read(SharedManager.USER_NAME, "");
+//            String fileName = nickName + list_post.get(position).getDate();
+//            String name_img = nickName + '1';
+//
+//            storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
+//
+//                //다운로드 URL이 파라미터로 전달되어 옴.
+//                Glide.with(mContext).load(uri).into(holder.iv_img);
+//            });
+//        }
     }
 
     @Override
@@ -90,6 +108,11 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
     }
 
 
+   public void setListener(ListFragment.LikeInterface likeInterface)
+   {
+       this.likeInterface = likeInterface;
+
+   }
 
 
 
@@ -125,6 +148,7 @@ public class BulletinAdapter extends RecyclerView.Adapter<BulletinAdapter.BoardV
                     Intent intent = new Intent(fragment.getActivity(), ShowPostAct.class);
                     intent.putExtra("post", list_post.get(adapterPosition));
                     intent.putExtra("key", key);
+//                    intent.putExtra("a", fragment.getActivity());
                     fragment.startActivity(intent);
                 }
                 });

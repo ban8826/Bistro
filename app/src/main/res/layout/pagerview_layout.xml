@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="300dp">
+    android:layout_height="280dp">
 
     // 학원광고에서 학원사진 보여주는 페이저어댑터의 레이아웃
 

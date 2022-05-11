@@ -45,7 +45,7 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
         UiSettings uiSettings = naverMap.getUiSettings();
         uiSettings.setLocationButtonEnabled(false);
         LatLng location = new LatLng(0, 0);
-        CameraPosition cameraPosition =new CameraPosition(location, 16,60, 20);
+        CameraPosition cameraPosition = new CameraPosition(location, 16,60, 20);
         naverMap.setMinZoom(10.0);   //최소
         naverMap.setMaxZoom(18.0);  //최대
         naverMap.setCameraPosition(cameraPosition);
@@ -64,8 +64,6 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
         {
             return;
         }
-
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }

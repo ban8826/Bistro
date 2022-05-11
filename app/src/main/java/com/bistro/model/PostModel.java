@@ -1,6 +1,7 @@
 package com.bistro.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 /**
  * summary 게시판 글 1개의 정보를 담는 클래스.
@@ -15,12 +16,16 @@ public class PostModel implements Serializable {
     private String authToken;   // 계정 토큰
     private String fcmToken;    // 푸시 토큰
     private String userId;      // 사용자 ID
-    private String id;          // 게시글 ID
+    private String id;          // 게시글 ID (랜덤생성키)
     private String menu;
     // 임시
     private String click; // 조회수
     private String like;  // 공감수
-    private String dislike;
+
+    private HashMap<String, PostLikeModel> list_list;
+
+    // 싫어요는 일단 삭제하기로
+//    private String dislike;
 
     public PostModel() { }
 
@@ -32,13 +37,21 @@ public class PostModel implements Serializable {
         return like;
     }
 
-    public void setDislike(String dislike) {
-        this.dislike = dislike;
+    public void setList_list(HashMap<String, PostLikeModel> list_list) {
+        this.list_list = list_list;
     }
 
-    public String getDislike() {
-        return dislike;
+    public HashMap<String, PostLikeModel> getList_list() {
+        return list_list;
     }
+
+    //    public void setDislike(String dislike) {
+//        this.dislike = dislike;
+//    }
+//
+//    public String getDislike() {
+//        return dislike;
+//    }
 
     public void setUserId(String userId) {
         this.userId = userId;

@@ -66,7 +66,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener 
 
             case R.id.btn_register:
                 // 회원가입
-                startActivity(new Intent(this, RegisterAct.class));
+                startActivity(new Intent(this, JoinAct.class));
                 break;
         }
     }
@@ -93,7 +93,7 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener 
                         if (userModel != null) {
                             // 로그인 타입 (Firebase Auth)
 
-                            SharedManager.write(SharedManager.LOGIN_TYPE, Const.LOGIN_TYPE_FIREBASE_EMAIL);
+//                            SharedManager.write(SharedManager.LOGIN_TYPE, Const.LOGIN_TYPE_FIREBASE_EMAIL);
                             SharedManager.write(SharedManager.LOGIN_ID, userModel.getId());
                             SharedManager.write(SharedManager.AUTH_TOKEN, userModel.getAuthToken());
                             SharedManager.write(SharedManager.FCM_TOKEN, userModel.getFcmToken());

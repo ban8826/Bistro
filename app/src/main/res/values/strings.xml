@@ -1,5 +1,10 @@
 <resources>
-    <string name="app_name">Bistro</string>
+    <string name="app_name">단풍맛집</string>
 
     <string name="KAKAO_NATIVE_APP_KEY">e9174c99599fbfc1fa90b73cf5929ebf</string>
+
+    <string name="join">회원가입</string>
+    <string name="login">로그인</string>
+    <string name="FORGOT_ID_PWD"><u>비밀번호를 잊으셨나요?</u></string>
+
 </resources>

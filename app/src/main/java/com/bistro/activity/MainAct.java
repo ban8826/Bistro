@@ -3,12 +3,14 @@ package com.bistro.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.bistro.R;
 import com.bistro.database.SharedManager;
-import com.bistro.fragment.FavoriteFrag;
+import com.bistro.fragment.FavoriteFragment;
 import com.bistro.fragment.ListFragment;
 import com.bistro.fragment.MyInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -18,11 +20,13 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 
     // test comment
 //    private AppDatabase mLocalDatabase;
-
+    public static Activity _Main_Activity;
+    public ListFragment bulletinFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
+        _Main_Activity  = MainAct.this;
         init();
 //       setInitialize();
     }
@@ -30,8 +34,8 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     private void init() {
 
         SharedManager.init(getApplicationContext());
-        ListFragment bulletinFragment = new ListFragment();
-        FavoriteFrag favoriteFrag = new FavoriteFrag();
+        bulletinFragment = new ListFragment();
+        FavoriteFragment favoriteFragment = new FavoriteFragment();
         MyInfoFragment myInfoFragment = new MyInfoFragment();
 
         // set default fragment
@@ -46,7 +50,7 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
                     break;
 
                 case R.id.menu_favorite:
-                    transaction.replace(R.id.container, favoriteFrag).commit();
+                    transaction.replace(R.id.container, favoriteFragment).commit();
                     break;
 
                 case R.id.menu_my_info:
@@ -113,4 +117,32 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(_Main_Activity, "온파우스 실행", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+      }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        bulletinFragment.bulletinAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(_Main_Activity, "온스타트 실행", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Toast.makeText(_Main_Activity, "온리숨 실행", Toast.LENGTH_SHORT).show();
+    }
 }

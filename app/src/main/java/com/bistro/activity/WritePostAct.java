@@ -59,7 +59,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private TextInputEditText
             et_content; // 게시글 내용
 
-    private Uri pictureUri[];
+    private Uri[] pictureUri;
     private ImageView iv_image1, iv_image2, iv_image3, iv_image4, iv_image5, iv_image6, iv_back_arrow
                       , iv_pick_images;
     private RecyclerView rv_images;
@@ -195,7 +195,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 progressDialog.show();
 
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                String picName [] = new String [6];
+                String[] picName = new String [6];
 
                 /** 이미지파일 이름 **/
                 picName[0] = strNickName + '1';
@@ -210,6 +210,10 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                 for(int i=0; i<listImages.size(); i++) {
 
+
+                    /** 여기서 else 문을 만들어서 이미지를 아무것도 선택하지 않을경우를 만들어서
+                     *  listFragment에서 Storage에서 이미지를 가져올떄
+                     */
                     if(listImages.get(i) != null)
                     {
 
@@ -277,7 +281,8 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(getApplicationContext(), "이미지를 선택하지 않았습니다.", Toast.LENGTH_LONG).show();
         }
         else{   // 이미지를 하나라도 선택한 경우
-            if(data.getClipData() == null){     // 이미지를 하나만 선택한 경우
+            if(data.getClipData() == null)
+            {     // 이미지를 하나만 선택한 경우
                 Log.e("single choice: ", String.valueOf(data.getData()));
                 Uri imageUri = data.getData();
                 listImages.add(imageUri);
