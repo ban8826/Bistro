@@ -18,6 +18,7 @@ public class PostModel implements Serializable {
     private String userId;      // 사용자 ID
     private String id;          // 게시글 ID (랜덤생성키)
     private String menu;
+    private String address;
     // 임시
     private String click; // 조회수
     private String like;  // 공감수
@@ -59,6 +60,14 @@ public class PostModel implements Serializable {
 
     public String getUserId() {
         return userId;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public void setClick(String click) {

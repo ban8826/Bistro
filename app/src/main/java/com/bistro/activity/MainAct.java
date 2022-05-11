@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -117,10 +118,12 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+
+
+
     @Override
     protected void onPause() {
         super.onPause();
-        Toast.makeText(_Main_Activity, "온파우스 실행", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -131,18 +134,16 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onRestart() {
         super.onRestart();
-        bulletinFragment.bulletinAdapter.notifyDataSetChanged();
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(_Main_Activity, "온스타트 실행", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Toast.makeText(_Main_Activity, "온리숨 실행", Toast.LENGTH_SHORT).show();
     }
 }

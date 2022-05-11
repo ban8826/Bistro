@@ -28,6 +28,7 @@ import com.bistro.adapter.RelatedAdapter;
 import com.bistro.adapter.ViewPagerAdapter;
 import com.bistro.database.SharedManager;
 import com.bistro.fragment.ListFragment;
+import com.bistro.fragment.NaverMapFragment;
 import com.bistro.model.PostLikeModel;
 import com.bistro.model.PostModel;
 import com.bistro.model.UserLikeModel;
@@ -49,7 +50,7 @@ import com.naver.maps.map.OnMapReadyCallback;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ShowPostAct extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
+public class ShowPostAct extends AppCompatActivity implements View.OnClickListener {
 
 
     private ImageView iv_back, iv_like, iv_dislike, iv_favorite;
@@ -76,6 +77,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
 
     private Fragment mapFragment;
     private ListFragment likeInterface;
+    private NaverMapFragment naverMapFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -143,14 +145,25 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         getFirebaseBoardList();
 
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        mapFragment = fragmentManager.findFragmentById(R.id.map);
-        fragmentManager.beginTransaction().replace(R.id.map, mapFragment);
     }
 
     @Override
-    public void onMapReady(@NonNull NaverMap naverMap) {
+    protected void onResume() {
+        super.onResume();
 
+        // 네이버지도 불러오는 부분
+        FragmentManager fragmentManager = getSupportFragmentManager();
+//            String address = postModel.getAddress();
+        // 예시.
+        String address = "04058, 서울 마포구 서강로 131 (노고산동)";
+        naverMapFragment = new NaverMapFragment(address);
+        fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
+    }
+
+    public void changeAct()
+    {
+        Intent intent = new Intent(ShowPostAct.this, NaverMapAct.class);
+        startActivity(intent);
     }
 
     @Override
@@ -419,12 +432,6 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         } else {
 
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(context, "t쇼액티 온디스트로이 실행(", Toast.LENGTH_SHORT).show();
     }
 
     // 관련글에 들어갈 데이터를 파베에서 가져와야하는 부분
