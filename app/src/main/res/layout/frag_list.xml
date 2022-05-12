@@ -70,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:id="@+id/const_middle"
-        android:background="@color/gray_light2"
+        android:background="@color/gray_light3"
         app:layout_constraintTop_toBottomOf="@id/const_top"
         app:layout_constraintLeft_toLeftOf="parent">
 

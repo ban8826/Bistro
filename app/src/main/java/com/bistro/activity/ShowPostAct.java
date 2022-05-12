@@ -98,6 +98,8 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         tv_content = findViewById(R.id.tv_content);
         tv_title = findViewById(R.id.tv_title);
         tv_store_name = findViewById(R.id.tv_store_name);
+        tv_nickName = findViewById(R.id.tv_nickName);
+        tv_nickName.setText(postModel.getNickName());
 
         title = postModel.getTitle();
         store_name = postModel.getStoreName();
@@ -108,7 +110,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         list_post = new ArrayList<>();
         list_key = new ArrayList<>();
 
-        tv_title.setText(title);
+//        tv_title.setText(title);
         tv_store_name.setText(store_name);
         tv_menu.setText(menu);
         tv_content.setText(content);
@@ -135,8 +137,8 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         viewPager.setPadding(0, 0, 0, 0);
         viewPager.setPageMargin(0);
 
-//        tabLayout_dot = findViewById(R.id.tab_layout2);
-//        tabLayout_dot.setupWithViewPager(viewPager, true);
+        tabLayout_dot = findViewById(R.id.tab_layout2);
+        tabLayout_dot.setupWithViewPager(viewPager, true);
 
         /** 스토리지에서 사진 불러오는 중요 함수 **/
         getImages();
