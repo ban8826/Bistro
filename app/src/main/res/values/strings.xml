@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Bistro</string>
 
-    <string name="KAKAO_NATIVE_APP_KEY">e9174c99599fbfc1fa90b73cf5929ebf</string>
+<!--    <string name="KAKAO_NATIVE_APP_KEY">e9174c99599fbfc1fa90b73cf5929ebf</string>-->
+    <string name="KAKAO_NATIVE_APP_KEY">9d0ab26d1197649186f296a4e22ee5be</string>
+    <string name="KAKAO_REST_API_KEY">KakaoAK 3b410daefa4714cf0bb5ecebb7f887c4</string>
 </resources>

@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/a_write_post_layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back_arrow"/>
+
+        <TextView
+            android:id="@+id/tv_top"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="작성하기"
+            android:layout_marginStart="10dp"
+            style="@style/CommonTheme20"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:id="@+id/btn_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingEnd="16dp"
+            android:text="완료"
+            android:textColor="#536DFE"
+            style="@style/CommonTheme20"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/tv_top" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/view_top_line"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/gray_light"
+        app:layout_constraintTop_toBottomOf="@+id/a_write_post_layout_header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@+id/view_top_line"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/a_write_post_et_title"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:paddingHorizontal="10dp"
+                android:hint="글의 제목을 작성해 주세요."
+                android:textColor="@color/black"
+                android:textSize="@dimen/TEXT_SIZE_TITLE"
+                android:singleLine="true"/>
+
+            <View
+                android:id="@+id/view_title"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/gray_light"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="15dp">
+
+                <LinearLayout
+                    android:id="@+id/a_write_post_layout_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="맛집이름"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="3dp"/>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/HEIGHT_EDIT_TEXT">
+
+                        <EditText
+                            android:id="@+id/a_write_post_et_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
+                            android:hint="맛집을 찾아주세요."
+                            android:singleLine="true"/>
+
+                        <ImageView
+                            android:id="@+id/a_write_post_iv_search_poi"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:padding="10dp"
+                            android:src="@drawable/img_poi_search"
+                            android:layout_gravity="center|end"/>
+                    </FrameLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/a_write_post_layout_menu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="최고메뉴"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/a_write_post_et_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
+                        android:hint="메뉴명을 작성해 주세요."
+                        android:singleLine="true"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/a_write_post_layout_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="3dp"
+                        android:text="맛집주소"
+                        android:textColor="@color/black"/>
+
+                    <EditText
+                        android:id="@+id/a_write_post_et_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
+                        android:enabled="false"
+                        android:text="대전 서구 도마동"
+                        android:textColor="@color/gray_dark"/>
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/a_write_post_map"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_marginBottom="10dp"
+                android:name="com.naver.maps.map.MapFragment"
+                android:visibility="gone"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/a_write_post_iv_picture"
+                    android:layout_width="100dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/img_add_picture"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/a_write_post_rv_picture"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/item_picture"
+                    tools:itemCount="4"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_content"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="30dp"
+                android:background="@color/gray_light"/>
+
+<!--            <com.google.android.material.textfield.TextInputLayout-->
+<!--                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/textInput"-->
+<!--                android:hint="이 맛집에 대한 리뷰를 작성해 주세요!">-->
+
+<!--                <com.google.android.material.textfield.TextInputEditText-->
+<!--                    android:id="@+id/a_write_post_et_content"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@android:color/transparent"-->
+<!--                    android:gravity="top|start"-->
+<!--                    android:inputType="textMultiLine"-->
+<!--                    android:lines="10"-->
+<!--                    android:maxLength="100"-->
+<!--                    android:maxLines="10"-->
+<!--                    android:overScrollMode="always"-->
+<!--                    android:scrollbarStyle="insideInset"-->
+<!--                    android:scrollbars="vertical"-->
+<!--                    android:scrollHorizontally="false"-->
+<!--                    android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                    android:textColor="#000"-->
+<!--                    android:textSize="18sp" />-->
+
+<!--            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <EditText
+                android:id="@+id/a_write_post_et_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="top|start"
+                android:hint="이 맛집에 대한 리뷰를 작성해 주세요!"
+                android:padding="10dp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

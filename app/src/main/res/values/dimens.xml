@@ -38,4 +38,7 @@
     <dimen name="oneHundredTwenty">120dp</dimen>
     <dimen name="oneHundredThirty">130dp</dimen>
     <dimen name="oneHundredForty">140dp</dimen>
+
+    <dimen name="HEIGHT_EDIT_TEXT">50dp</dimen>
+    <dimen name="TEXT_SIZE_TITLE">20dp</dimen>
 </resources>

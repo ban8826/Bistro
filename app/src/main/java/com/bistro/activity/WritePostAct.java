@@ -18,24 +18,21 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bistro.R;
+import com.bistro.util.RetrofitMain;
 import com.bistro.adapter.PictureAdapter;
 import com.bistro.database.SharedManager;
 import com.bistro.model.PostModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.UploadTask;
 
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,36 +44,39 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
             mDatabaseRef;
     private Context context;
 
+    private RetrofitMain retrofitMain;
+
     private TextView
             tv_top,     // 게시글 모드 (작성하기 or 상세보기)
             tv_complete;  // 작성완료 텍스트 버튼
 
     private EditText
             et_title,   // 게시글 제목
-             et_name_of_store,
+            et_name_of_store,
             et_menu;
 
-    private TextInputEditText
+    private EditText
             et_content; // 게시글 내용
 
     private Uri pictureUri[];
     private ImageView iv_image1, iv_image2, iv_image3, iv_image4, iv_image5, iv_image6, iv_back_arrow
-                      , iv_pick_images;
+                      , iv_pick_images, iv_search_poi;
     private RecyclerView rv_images;
     private PictureAdapter pictureAdapter;
     private ArrayList<Uri> listImages;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setContentView(R.layout.act_write_post);
+        setContentView(R.layout.act_write_post_copy);
         setInitialize();
     }
 
     private void setInitialize() {
         SharedManager.init(getApplicationContext());
+
+        retrofitMain = new RetrofitMain(this);
 
 //        mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("bistro");
@@ -84,23 +84,26 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
         tv_top = findViewById(R.id.tv_top);
         tv_complete = findViewById(R.id.btn_complete);
-        et_title = findViewById(R.id.et_title);
-        et_name_of_store = findViewById(R.id.et_store_name);
-        et_content = findViewById(R.id.et_content);
-        et_menu = findViewById(R.id.et_menu);
+        et_title = findViewById(R.id.a_write_post_et_title);
+        et_name_of_store = findViewById(R.id.a_write_post_et_name);
+        et_menu = findViewById(R.id.a_write_post_et_menu);
+        et_content = findViewById(R.id.a_write_post_et_content);
 
         findViewById(R.id.btn_back).setOnClickListener(this);
         tv_complete.setOnClickListener(this);
 
             // postmode : 작성하기
-            tv_complete.setVisibility(View.VISIBLE);
+//            tv_complete.setVisibility(View.VISIBLE);
 //            setEnabledInputField(true);
 
 
         // 사진 여러장 가져오는 부분 코드
-        rv_images = findViewById(R.id.rv_images);
-        iv_pick_images = findViewById(R.id.iv_pick_image);
+        rv_images = findViewById(R.id.a_write_post_rv_picture);
+        iv_pick_images = findViewById(R.id.a_write_post_iv_picture);
         iv_pick_images.setOnClickListener(this);
+
+        iv_search_poi = findViewById(R.id.a_write_post_iv_search_poi);
+        iv_search_poi.setOnClickListener(this);
 
         listImages = new ArrayList<>();
     }
@@ -124,7 +127,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 finish();
                 break;
 
-            case R.id.iv_pick_image:
+            case R.id.a_write_post_iv_picture:
 
                 intent = new Intent(Intent.ACTION_PICK);
                 intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -264,6 +267,15 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 } // for문 끝나는 블락
                 break;
 
+            case R.id.a_write_post_iv_search_poi:
+                if (et_name_of_store.getText().toString().isEmpty()) {
+                    Toast.makeText(context, "상호명을 입력해주세요 !", Toast.LENGTH_SHORT).show();
+                } else {
+                    retrofitMain.getSearchPoi(et_name_of_store.getText().toString());
+                }
+
+                break;
+
         }
     }
 
@@ -284,7 +296,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                 pictureAdapter = new PictureAdapter( getApplicationContext(),listImages);
                 rv_images.setAdapter(pictureAdapter);
-                rv_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//                rv_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                 pictureAdapter.notifyDataSetChanged();
 
             }
@@ -308,7 +320,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                     pictureAdapter = new PictureAdapter( getApplicationContext(),listImages);
                     rv_images.setAdapter(pictureAdapter);
-                    rv_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//                    rv_images.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
                     pictureAdapter.notifyDataSetChanged();
                 }
             }
