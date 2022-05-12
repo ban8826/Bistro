@@ -1,5 +1,7 @@
 package com.bistro.model;
 
+import java.util.HashMap;
+
 public class UserModel {
     private String id;              // 사용자 아이디
     private String name;            // 닉네임
@@ -9,7 +11,7 @@ public class UserModel {
     private String area;            // 동네 인증 정보
     private String mbti;            // MBTI 정보
     private String introduce;       // 자기소개 한마디, 칭호
-    private String favorite;
+    private HashMap<String, PostModel> favorite;
 
     public UserModel() { }
 
@@ -33,11 +35,12 @@ public class UserModel {
         return profileImgPath;
     }
 
-    public void setFavorite(String favorite) {
+    public void setFavorite(HashMap<String, PostModel> favorite) {
         this.favorite = favorite;
     }
 
-    public String getFavorite() {
+
+    public HashMap<String, PostModel> getFavorite() {
         return favorite;
     }
 

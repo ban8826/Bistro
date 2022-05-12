@@ -1,12 +1,13 @@
 package com.bistro.fragment;
 
 import android.app.ProgressDialog;
-import android.graphics.Shader;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -23,7 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.melnykov.fab.FloatingActionButton;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -32,7 +34,7 @@ import java.util.ArrayList;
  * author hongdroid94
  * summary 채팅 프래그먼트
  */
-public class FavoriteFrag extends Fragment implements View.OnClickListener {
+public class FavoriteFragment extends Fragment implements View.OnClickListener {
 
     private RecyclerView recycler;
     private BulletinAdapter bulletinAdapter;
@@ -46,7 +48,10 @@ public class FavoriteFrag extends Fragment implements View.OnClickListener {
     private ProgressDialog mProgressDialog;     // 로딩 프로그레스
     private TextView tv_like_order, tv_recent_order, mTvMsgEmpty;               // 게시글이 0개일 때 empty text
 
-
+    private StorageReference storageReference;
+    private ArrayList<Uri> list_uri;
+    private View view;
+    private ProgressBar loadingProgress;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,6 +61,8 @@ public class FavoriteFrag extends Fragment implements View.OnClickListener {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.view = view;
+        startLoadingProgress();
         setInitialize(view);
     }
 
@@ -70,6 +77,9 @@ public class FavoriteFrag extends Fragment implements View.OnClickListener {
         recycler.setHasFixedSize(true);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("bistro");
+
+        storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bistro-5bc79.appspot.com");
+        list_uri = new ArrayList<>();
 
         // init progress dialog
         mProgressDialog = new ProgressDialog(getContext());
@@ -120,10 +130,29 @@ public class FavoriteFrag extends Fragment implements View.OnClickListener {
                         list_key.add(0, snapshot.getKey());
                     }
 
-                    bulletinAdapter = new BulletinAdapter(FavoriteFrag.this, list_post, list_key, "favorite");
-                    recycler.setAdapter(bulletinAdapter);
-                    bulletinAdapter.notifyDataSetChanged();
+                    for(PostModel postModel : list_post)
+                    {
+                        String nickName = SharedManager.read(SharedManager.USER_NAME, "");
+                        String fileName = nickName + postModel.getDate();
+                        String name_img = nickName + '1';
+
+
+                        storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
+
+                            //다운로드 URL이 파라미터로 전달되어 옴.
+                            list_uri.add(uri);
+
+                            if(list_post.size() == list_uri.size())
+                            {
+                                bulletinAdapter = new BulletinAdapter(FavoriteFragment.this, list_post, list_uri, list_key, "favorite");
+                                recycler.setAdapter(bulletinAdapter);
+                                bulletinAdapter.notifyDataSetChanged();
 //                   setProgressDialog(null, false);
+                                finishLoadingProgress();
+                            }
+                        });
+                    }
+
                 }
             }
 
@@ -144,8 +173,24 @@ public class FavoriteFrag extends Fragment implements View.OnClickListener {
 //                getLogoutResult.launch(settingIntent);
 //                break;
         }
+    }
+
+    /**
+     * 로딩 프로그레스바를 활성화 시킨다.
+     */
+    private void startLoadingProgress() {
+
+        loadingProgress = view.findViewById(R.id.loadingProgress);
+        loadingProgress.setVisibility(View.VISIBLE);
+    }
 
 
+    /**
+     * 로딩 프로그레스바를 비활성화 시킨다.
+     */
+    private void finishLoadingProgress() {
+        loadingProgress = view.findViewById(R.id.loadingProgress);
+        loadingProgress.setVisibility(View.INVISIBLE);
     }
 
 }

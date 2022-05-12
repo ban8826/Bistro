@@ -31,7 +31,7 @@ import java.io.File;
  * author hongdroid94
  * summary 회원가입 화면
  */
-public class RegisterAct extends AppCompatActivity implements View.OnClickListener {
+public class JoinAct extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mFirebaseAuth;
     private DatabaseReference mDatabaseRef;
@@ -101,12 +101,12 @@ public class RegisterAct extends AppCompatActivity implements View.OnClickListen
                         strPwd     .length() == 0 ||
                         strPwdRe   .length() == 0 ||
                         strNickName.length() == 0) {
-                    Toast.makeText(RegisterAct.this, "비어있는 입력 값이 존재 합니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JoinAct.this, "비어있는 입력 값이 존재 합니다", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if (!strPwd.equals(strPwdRe)) {
-                    Toast.makeText(RegisterAct.this, "비밀번호와 확인 값이 다릅니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(JoinAct.this, "비밀번호와 확인 값이 다릅니다", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -172,7 +172,7 @@ public class RegisterAct extends AppCompatActivity implements View.OnClickListen
                         // save firebase database
                         mDatabaseRef.child("userInfo").child(_strUserToken).setValue(userModel).addOnSuccessListener(unused -> {
                             // Return to LoginAct
-                            Toast.makeText(RegisterAct.this, "회원가입이 완료 되었습니다", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(JoinAct.this, "회원가입이 완료 되었습니다", Toast.LENGTH_SHORT).show();
                             finish();
                         });
                     });
@@ -192,7 +192,7 @@ public class RegisterAct extends AppCompatActivity implements View.OnClickListen
             // save firebase database
             mDatabaseRef.child("userInfo").child(_strUserToken).setValue(userModel).addOnSuccessListener(unused -> {
                 // Return to LoginAct
-                Toast.makeText(RegisterAct.this, "회원가입이 완료 되었습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JoinAct.this, "회원가입이 완료 되었습니다", Toast.LENGTH_SHORT).show();
                 finish();
             });
         }

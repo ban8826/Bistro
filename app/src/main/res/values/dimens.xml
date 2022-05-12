@@ -3,15 +3,19 @@
 
     <dimen name="three">3sp</dimen>
     <dimen name="five">5sp</dimen>
+    <dimen name="seven">7sp</dimen>
     <dimen name="eight">8sp</dimen>
     <dimen name="ten">10sp</dimen>
+    <dimen name="eleven">11sp</dimen>
+    <dimen name="twelve">12sp</dimen>
     <dimen name="thirteen">13sp</dimen>
+    <dimen name="fourteen">14sp</dimen>
     <dimen name="fifteen">15sp</dimen>
+    <dimen name="sixteen">16sp</dimen>
     <dimen name="seventeen">17sp</dimen>
     <dimen name="twenty">20sp</dimen>
     <dimen name="TwentyFive">25sp</dimen>
     <dimen name="spTwentyThree">23sp</dimen>
-    <dimen name="sixteen">16dp</dimen>
     <dimen name="spSeventeen">17sp</dimen>
     <dimen name="spEighteen">18sp</dimen>
     <dimen name="spFifteen">15sp</dimen>

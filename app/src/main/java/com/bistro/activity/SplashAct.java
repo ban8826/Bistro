@@ -75,7 +75,7 @@ public class SplashAct extends AppCompatActivity {
             }
             overridePendingTransition(0, 0);
             finish();
-        }, 500);
+        }, 50);
     }
 
 

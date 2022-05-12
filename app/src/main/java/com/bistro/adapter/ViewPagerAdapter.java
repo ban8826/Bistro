@@ -19,8 +19,8 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 public class ViewPagerAdapter extends PagerAdapter {
-    private Context mContext;
-    private ArrayList<Uri> imageList;
+    private final Context mContext;
+    private final ArrayList<Uri> imageList;
     private ImageView imageView;
     private RequestManager manager;
     private StorageReference storageReference;
@@ -33,8 +33,6 @@ public class ViewPagerAdapter extends PagerAdapter {
         this.imageList = imageList;
 //        this.imageList = imageList;
 //        this.manager = manager;
-
-
     }
 
     @NonNull
