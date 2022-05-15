@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,15 +17,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import com.bistro.R;
-import com.bistro.activity.MainAct;
 import com.bistro.activity.NaverMapAct;
-import com.bistro.activity.SearchAct;
-import com.bistro.activity.ShowPostAct;
+import com.bistro.activity.DetailPostAct;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.MapView;
 import com.naver.maps.map.OnMapReadyCallback;
+import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.Marker;
 
 import java.io.IOException;
@@ -47,12 +45,12 @@ public class NaverMapFragment extends Fragment implements OnMapReadyCallback {
     private Double latitude, longitude;
     float zoom ;
 
-    ShowPostAct showPostAct;
+    DetailPostAct detailPostAct;
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        showPostAct = (ShowPostAct) getActivity();
+        detailPostAct = (DetailPostAct) getActivity();
     }
 
     private ConstraintLayout constraintLayout;
@@ -91,11 +89,8 @@ public class NaverMapFragment extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.navermap, container, false);
         mapView = rootView.findViewById(R.id.mapview);
-        mapView.onCreate(savedInstanceState);
+//        mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
-        constraintLayout = rootView.findViewById(R.id.const_whole);
-
 
         return rootView;
     }
@@ -110,6 +105,11 @@ public class NaverMapFragment extends Fragment implements OnMapReadyCallback {
     public void onMapReady(@NonNull NaverMap naverMap) {
 
         this.map = naverMap;
+
+        // 현재 위치 버튼 안보이게 설정
+        UiSettings uiSettings = map.getUiSettings();
+        uiSettings.setZoomControlEnabled(false);  // 확대 축소 버튼 사라지게함
+        uiSettings.setScaleBarEnabled(false);   // 미터 나타내는 스케일 사리지게함.
 
         Marker marker = new Marker();
         LatLng myLatLng = new LatLng(latitude, longitude);

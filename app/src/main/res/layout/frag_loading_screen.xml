@@ -12,7 +12,7 @@
 
         <ProgressBar
             android:id="@+id/progressBar1"
-            style="?android:attr/progressBarStyleLarge"
+            style="?android:attr/progressBarStyleSmall"
             android:theme="@style/progressbar_color_under_api21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

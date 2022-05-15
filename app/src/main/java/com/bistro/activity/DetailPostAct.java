@@ -1,12 +1,10 @@
 package com.bistro.activity;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +21,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bistro.R;
-import com.bistro.adapter.BulletinAdapter;
 import com.bistro.adapter.RelatedAdapter;
 import com.bistro.adapter.ViewPagerAdapter;
 import com.bistro.database.SharedManager;
@@ -32,8 +29,6 @@ import com.bistro.fragment.NaverMapFragment;
 import com.bistro.model.PostLikeModel;
 import com.bistro.model.PostModel;
 import com.bistro.model.UserLikeModel;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.tasks.DuplicateTaskCompletionException;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -43,14 +38,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.naver.maps.map.MapView;
-import com.naver.maps.map.NaverMap;
-import com.naver.maps.map.OnMapReadyCallback;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ShowPostAct extends AppCompatActivity implements View.OnClickListener {
+public class DetailPostAct extends AppCompatActivity implements View.OnClickListener {
 
 
     private ImageView iv_back, iv_like, iv_dislike, iv_favorite;
@@ -83,7 +74,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.act_show_post);
+        setContentView(R.layout.act_detail_post);
 
         context = getApplicationContext();
         intent = getIntent();
@@ -146,6 +137,26 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         /** 파베에서 관련글 데이터 가져오는 부분 **/
         getFirebaseBoardList();
 
+        new Handler().postDelayed(() -> {
+            // 네이버지도 불러오는 부분
+            FragmentManager fragmentManager = getSupportFragmentManager();
+//            String address = postModel.getAddress();
+            // 예시.
+            String address = "04058, 서울 마포구 서강로 131 (노고산동)";
+            if(naverMapFragment == null)
+            {
+                naverMapFragment = new NaverMapFragment(address);
+
+            }
+            fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
+        }, 500);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
 
     }
 
@@ -153,20 +164,10 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
     protected void onResume() {
         super.onResume();
 
-        // 네이버지도 불러오는 부분
-        FragmentManager fragmentManager = getSupportFragmentManager();
-//            String address = postModel.getAddress();
-        // 예시.
-        String address = "04058, 서울 마포구 서강로 131 (노고산동)";
-        naverMapFragment = new NaverMapFragment(address);
-        fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
+
+
     }
 
-    public void changeAct()
-    {
-        Intent intent = new Intent(ShowPostAct.this, NaverMapAct.class);
-        startActivity(intent);
-    }
 
     @Override
     public void onClick(View view) {
@@ -424,7 +425,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
                                  imageList.add(uri);
 
                                  /** 2021. 10. 23 어댑터를 한번만 실행시키도록 수정하려했으나 실패 **/
-                                 PagerAdapter adapter = new ViewPagerAdapter(ShowPostAct.this, imageList);
+                                 PagerAdapter adapter = new ViewPagerAdapter(DetailPostAct.this, imageList);
                                  viewPager.setAdapter(adapter);
                                  adapter.notifyDataSetChanged();
                              }
@@ -454,7 +455,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
                         list_key.add(0, snapshot.getKey());
                     }
 
-                    relatedAdapter = new RelatedAdapter(ShowPostAct.this, list_post, list_key);
+                    relatedAdapter = new RelatedAdapter(DetailPostAct.this, list_post, list_key);
                     rv_related.setAdapter(relatedAdapter);
                     relatedAdapter.notifyDataSetChanged();
 //                   setProgressDialog(null, false);

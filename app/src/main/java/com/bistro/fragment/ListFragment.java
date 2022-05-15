@@ -165,20 +165,23 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
 
 
 
-                        storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
+//                        storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
+//
+//                            //다운로드 URL이 파라미터로 전달되어 옴.
+//                            list_uri.add(uri);
+//
+//                            if(list_post.size() == list_uri.size())
+//                            {
 
-                            //다운로드 URL이 파라미터로 전달되어 옴.
-                            list_uri.add(uri);
-
-                            if(list_post.size() == list_uri.size())
-                            {
-                                bulletinAdapter = new BulletinAdapter(ListFragment.this, list_post,list_uri, list_key,"list");
-                                recycler.setAdapter(bulletinAdapter);
-                                bulletinAdapter.notifyDataSetChanged();
+                            bulletinAdapter = new BulletinAdapter(ListFragment.this, list_post, list_uri, list_key, "list");
+                            recycler.setAdapter(bulletinAdapter);
+                            bulletinAdapter.notifyDataSetChanged();
 //                   setProgressDialog(null, false);
-                                finishLoadingProgress();
-                            }
-                        });
+
+
+                        finishLoadingProgress();
+//                            }
+//                        });
                     }
                 }
             }

@@ -68,44 +68,44 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:id="@+id/const_middle"
-        android:background="@color/gray_light"
+        android:background="@color/gray_light3"
         app:layout_constraintTop_toBottomOf="@id/const_top"
         app:layout_constraintLeft_toLeftOf="parent">
 
         <TextView
-            android:layout_width="75dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:id="@+id/tv_like"
             android:text="공감순"
-            android:textColor="@color/white"
-            android:textSize="@dimen/fifteen"
+            android:textColor="@color/black"
+            android:textSize="@dimen/twelve"
             android:gravity="center"
-            android:layout_marginTop="@dimen/fifteen"
-            android:layout_marginBottom="@dimen/fifteen"
+            android:layout_marginTop="@dimen/seven"
+            android:layout_marginBottom="@dimen/seven"
             android:layout_marginRight="@dimen/ten"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/border_gray_inside_10"
+            android:background="@drawable/border_black_10"
             />
 
         <TextView
-            android:layout_width="75dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:id="@+id/tv_recent"
             android:text="최신순"
-            android:textColor="@color/white"
-            android:textSize="@dimen/fifteen"
+            android:textColor="@color/black"
+            android:textSize="@dimen/twelve"
             android:gravity="center"
-            android:layout_marginTop="@dimen/fifteen"
-            android:layout_marginBottom="@dimen/fifteen"
+            android:layout_marginTop="@dimen/seven"
+            android:layout_marginBottom="@dimen/seven"
             android:layout_marginRight="@dimen/ten"
             app:layout_constraintRight_toLeftOf="@id/tv_like"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/border_gray_inside_10"
+            android:background="@drawable/border_black_10"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
