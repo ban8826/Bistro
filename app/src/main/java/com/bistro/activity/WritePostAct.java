@@ -6,12 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +26,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bistro.R;
+import com.bistro.dialog.SearchAddressDialog;
+import com.bistro.model.KakaoPlaceModel;
 import com.bistro.util.RetrofitMain;
 import com.bistro.adapter.PictureAdapter;
 import com.bistro.database.SharedManager;
@@ -32,17 +39,24 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.UploadTask;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.MapView;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class WritePostAct extends AppCompatActivity implements View.OnClickListener {
-
+    private final String TAG = "WritePostAct";
 
     private DatabaseReference
             mDatabaseRef;
     private Context context;
+
+    private InputMethodManager imm;
 
     private RetrofitMain retrofitMain;
 
@@ -53,10 +67,16 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private EditText
             et_title,   // 게시글 제목
             et_name_of_store,
-            et_menu;
+            et_menu,
+            et_address;
 
     private EditText
             et_content; // 게시글 내용
+
+    private LinearLayout
+            layoutAddress;
+
+    private MapView mapView;
 
     private Uri[] pictureUri;
     private ImageView iv_image1, iv_image2, iv_image3, iv_image4, iv_image5, iv_image6, iv_back_arrow
@@ -76,11 +96,14 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private void setInitialize() {
         SharedManager.init(getApplicationContext());
 
-        retrofitMain = new RetrofitMain(this);
-
-//        mFirebaseAuth = FirebaseAuth.getInstance();
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("bistro");
         context = getApplicationContext();
+
+        imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
+        listImages = new ArrayList<>();
+
+        layoutAddress = findViewById(R.id.a_write_post_layout_address);
+        mapView = findViewById(R.id.a_write_post_map);
 
         tv_top = findViewById(R.id.tv_top);
         tv_complete = findViewById(R.id.btn_complete);
@@ -88,6 +111,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
         et_name_of_store = findViewById(R.id.a_write_post_et_name);
         et_menu = findViewById(R.id.a_write_post_et_menu);
         et_content = findViewById(R.id.a_write_post_et_content);
+        et_address = findViewById(R.id.a_write_post_et_address);
 
         findViewById(R.id.btn_back).setOnClickListener(this);
         tv_complete.setOnClickListener(this);
@@ -95,7 +119,6 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
             // postmode : 작성하기
 //            tv_complete.setVisibility(View.VISIBLE);
 //            setEnabledInputField(true);
-
 
         // 사진 여러장 가져오는 부분 코드
         rv_images = findViewById(R.id.a_write_post_rv_picture);
@@ -105,16 +128,34 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
         iv_search_poi = findViewById(R.id.a_write_post_iv_search_poi);
         iv_search_poi.setOnClickListener(this);
 
-        listImages = new ArrayList<>();
+        et_name_of_store.setOnKeyListener((view, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                iv_search_poi.performClick();
+            }
+
+            return false;
+        });
+
+        showKeyboard(et_title, true);
     }
 
-//    private void setEnabledInputField(boolean _isEnabled) {
-//        // 입력필드 활성화 or 비활성화
-//        mEtTitle.setEnabled(_isEnabled);
-//        mEtContent.setEnabled(_isEnabled);
-//        mEtAddress.setEnabled(_isEnabled);
-//    }
+    public void showKeyboard(EditText editText, boolean isShow) {
+        if (imm != null) {
+            editText.requestFocus();
 
+            new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (isShow) {
+                        imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+                    } else {
+                        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
+            }, 300);
+
+        }
+    }
 
     @Override
     public void onClick(View view) {
@@ -122,6 +163,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
         Intent intent;
 
         switch (view.getId()) {
+
             //  뒤로가기
             case R.id.btn_back:
                 finish();
@@ -272,11 +314,51 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.a_write_post_iv_search_poi:
+
+                SearchAddressDialog searchDialog;
+
                 if (et_name_of_store.getText().toString().isEmpty()) {
-                    Toast.makeText(context, "상호명을 입력해주세요 !", Toast.LENGTH_SHORT).show();
+                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager());
                 } else {
-                    retrofitMain.getSearchPoi(et_name_of_store.getText().toString());
+                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager(), et_name_of_store.getText().toString());
                 }
+
+                searchDialog.setResultListener(place -> {
+                    Log.d(TAG, "onResult !!");
+
+                    String strAddress = place.getAddress_name();
+                    String strRoadAddress = place.getRoad_address_name();
+
+                    layoutAddress.setVisibility(View.VISIBLE);
+                    if (strRoadAddress.equals("")) {
+                        et_address.setText(strAddress);
+                    } else {
+                        et_address.setText(strRoadAddress);
+                    }
+
+                    mapView.setVisibility(View.VISIBLE);
+                    mapView.getMapAsync(naverMap -> {
+                        naverMap.getUiSettings().setZoomControlEnabled(false);
+                        double x = Double.parseDouble(place.getX());
+                        double y = Double.parseDouble(place.getY());
+                        LatLng latLng = new LatLng(y, x);
+                        CameraUpdate cam = CameraUpdate.scrollAndZoomTo(latLng, 18.0);
+                        naverMap.moveCamera(cam);
+
+                        Marker marker = new Marker();
+                        marker.setPosition(latLng);
+                        marker.setMap(naverMap);
+                        marker.setIcon(OverlayImage.fromResource(R.drawable.img_pin_copy));
+                    });
+
+                    showKeyboard(et_menu, true);
+                });
+                searchDialog.show();
+
+                int width = (int)(getResources().getDisplayMetrics().widthPixels*0.90);
+                int height = (int)(getResources().getDisplayMetrics().heightPixels*0.90);
+
+                searchDialog.getWindow().setLayout(width, height);
 
                 break;
 

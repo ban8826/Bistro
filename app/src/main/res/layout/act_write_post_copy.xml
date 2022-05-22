@@ -112,16 +112,49 @@
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
                             android:hint="맛집을 찾아주세요."
-                            android:singleLine="true"/>
+                            android:singleLine="true"
+                            />
 
                         <ImageView
                             android:id="@+id/a_write_post_iv_search_poi"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:padding="10dp"
-                            android:src="@drawable/img_poi_search"
+                            android:src="@drawable/img_search"
                             android:layout_gravity="center|end"/>
                     </FrameLayout>
+
+                    <LinearLayout
+                        android:id="@+id/a_write_post_layout_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="3dp"
+                            android:text="맛집주소"
+                            android:textColor="@color/black"/>
+
+                        <EditText
+                            android:id="@+id/a_write_post_et_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
+                            android:enabled="false"
+                            android:text="대전 서구 도마동"
+                            android:textColor="@color/gray_dark" />
+
+                    </LinearLayout>
+
+                    <com.naver.maps.map.MapView
+                        android:id="@+id/a_write_post_map"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:layout_marginBottom="10dp"
+                        android:visibility="gone"/>
 
                 </LinearLayout>
 
@@ -144,45 +177,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
                         android:hint="메뉴명을 작성해 주세요."
-                        android:singleLine="true"/>
+                        android:singleLine="true" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/a_write_post_layout_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="3dp"
-                        android:text="맛집주소"
-                        android:textColor="@color/black"/>
-
-                    <EditText
-                        android:id="@+id/a_write_post_et_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
-                        android:enabled="false"
-                        android:text="대전 서구 도마동"
-                        android:textColor="@color/gray_dark"/>
 
                 </LinearLayout>
 
 
             </LinearLayout>
-
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/a_write_post_map"
-                android:layout_width="match_parent"
-                android:layout_height="90dp"
-                android:layout_marginBottom="10dp"
-                android:name="com.naver.maps.map.MapFragment"
-                android:visibility="gone"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

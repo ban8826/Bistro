@@ -59,7 +59,7 @@ dependencies {
     // kakao login
     implementation "com.kakao.sdk:v2-user:2.4.2"
 
-    implementation 'com.naver.maps:map-sdk:3.9.0'
+    implementation 'com.naver.maps:map-sdk:3.14.0'
 
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

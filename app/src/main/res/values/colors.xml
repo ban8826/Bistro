@@ -20,4 +20,7 @@
     <!-- fab color -->
     <color name="primary">#536DFE</color>
     <color name="ripple">#8FB5B5B5</color>
+
+    <color name="main_orange">#FF7138</color>
+    <color name="main_dark_orange">#E45C25</color>
 </resources>

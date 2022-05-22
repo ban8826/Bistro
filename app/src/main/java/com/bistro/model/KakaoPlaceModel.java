@@ -1,5 +1,7 @@
 package com.bistro.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
 /**
@@ -10,7 +12,9 @@ import java.util.ArrayList;
 public class KakaoPlaceModel {
 
     public class PoiResult {
+        @SerializedName("meta")
         private PoiMeta                 poiMeta;
+        @SerializedName("documents")
         private ArrayList<PoiPlace>     poiPlace;
 
         //region getter & setter
@@ -21,6 +25,15 @@ public class KakaoPlaceModel {
         public void setPoiMeta(PoiMeta poiMeta) {
             this.poiMeta = poiMeta;
         }
+
+        public ArrayList<PoiPlace> getPoiPlace() {
+            return poiPlace;
+        }
+
+        public void setPoiPlace(ArrayList<PoiPlace> poiPlace) {
+            this.poiPlace = poiPlace;
+        }
+
         //endregion
     }
 
@@ -110,6 +123,26 @@ public class KakaoPlaceModel {
         private String          y;                      // Y 좌표값, 경위도인 경우 위도(latitude)
         private String          place_url;              // 장소 상세페이지 URL
         private String          distance;               // 중심좌표까지의 거리 (단, x,y 파라미터를 준 경우에만 존재) 단위 meter
+        private boolean         isClick;
+
+        @Override
+        public String toString() {
+            return "PoiPlace{" +
+                    "id='" + id + '\'' +
+                    ", place_name='" + place_name + '\'' +
+                    ", category_name='" + category_name + '\'' +
+                    ", category_group_code='" + category_group_code + '\'' +
+                    ", category_group_name='" + category_group_name + '\'' +
+                    ", phone='" + phone + '\'' +
+                    ", address_name='" + address_name + '\'' +
+                    ", road_address_name='" + road_address_name + '\'' +
+                    ", lon='" + x + '\'' +
+                    ", lat='" + y + '\'' +
+                    ", place_url='" + place_url + '\'' +
+                    ", distance='" + distance + '\'' +
+                    ", isCLick='" + isClick + '\'' +
+                    '}';
+        }
 
         //region getter & setter
         public String getId() {
@@ -207,6 +240,15 @@ public class KakaoPlaceModel {
         public void setDistance(String distance) {
             this.distance = distance;
         }
+
+        public boolean isClick() {
+            return isClick;
+        }
+
+        public void setClick(boolean click) {
+            isClick = click;
+        }
+
         //endregion
     }
 }
