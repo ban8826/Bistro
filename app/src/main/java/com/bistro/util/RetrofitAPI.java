@@ -10,11 +10,19 @@ import retrofit2.http.Headers;
 import retrofit2.http.Query;
 
 public interface RetrofitAPI {
-    @GET("v2/local/search/keyword.json")
-    Call<KakaoPlaceModel.PoiResult> getSearchPoi(@Header("Authorization") String key,
-                                                 @Query("query") String query);
+//    @GET("v2/local/search/keyword.json")
+//    Call<KakaoPlaceModel.PoiResult> getSearchPoi(@Header("Authorization") String key,
+//                                                 @Query("query") String query,
+//                                                 @Query("x") String lon,
+//                                                 @Query("y") String lat);
 
     @GET("v2/local/search/keyword.json")
-    Call<Object> getSearchPoi2(@Header("Authorization") String key,
-                                                 @Query("query") String query);
+    Call<KakaoPlaceModel.PoiResult> getSearchPoiFood(@Header("Authorization") String key,
+                                                     @Query("query") String query,
+                                                     @Query("category_group_code") String category);
+
+    @GET("v2/local/search/keyword.json")
+    Call<KakaoPlaceModel.PoiResult> getSearchPoiCafe(@Header("Authorization") String key,
+                                                     @Query("query") String query,
+                                                     @Query("category_group_code") String category);
 }
