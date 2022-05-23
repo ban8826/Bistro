@@ -49,10 +49,9 @@
         android:id="@+id/tv_store_name"
         android:text="서교타르트 카페"
         android:textColor="@color/orange"
-        android:textSize="@dimen/thirteen"
+        android:textSize="@dimen/eleven"
         android:textStyle="bold"
         android:layout_marginRight="@dimen/ten"
-        android:layout_marginTop="@dimen/three"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintLeft_toLeftOf="@id/tv_title"
         app:layout_constraintRight_toRightOf="parent"/>
@@ -126,7 +125,7 @@
       android:layout_height="wrap_content"
       android:id="@+id/tv_click"
       android:text="조회수:"
-      android:textColor="@color/gray_light"
+      android:textColor="@color/gray"
       android:textSize="@dimen/eleven"
       app:layout_constraintBottom_toBottomOf="@id/iv_card"
       app:layout_constraintLeft_toLeftOf="@id/tv_title"/>
@@ -136,8 +135,9 @@
       android:layout_height="wrap_content"
       android:id="@+id/tv_click_value"
       android:text="74"
-      android:textColor="@color/gray_light"
+      android:textColor="@color/gray"
       android:textSize="@dimen/eleven"
+      android:layout_marginLeft="@dimen/three"
       app:layout_constraintBottom_toBottomOf="@id/iv_card"
       app:layout_constraintLeft_toRightOf="@id/tv_click"/>
   <View

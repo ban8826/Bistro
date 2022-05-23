@@ -70,6 +70,7 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
     private ListFragment likeInterface;
     private NaverMapFragment naverMapFragment;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +85,8 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
         post_id = postModel.getId();  /** 게시글만의 유니크한 아이디 (랜덤키 + 날짜) **/
         databaseReference = FirebaseDatabase.getInstance().getReference("bistro");
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bistro-5bc79.appspot.com");
+
+
 
         tv_menu = findViewById(R.id.tv_menu_value);
         tv_content = findViewById(R.id.tv_content);
@@ -149,7 +152,15 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
 
             }
             fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
+            // 조회수 구현하는 부분
+            String str_click = postModel.getClick();
+            int int_click = Integer.parseInt(str_click) + 1;
+            // 조회수 파베에 저장
+            databaseReference.child("postInfo").child(key).child("click").setValue(String.valueOf(int_click));
         }, 500);
+
+
+
 
     }
 
@@ -236,12 +247,6 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
 //                                    databaseReference.child("postInfo").child(key).child("like_list").push().setValue(likeModel);
 
                                     Toast.makeText(context, "공감했습니다", Toast.LENGTH_SHORT).show();
-//                                    MainAct MA = (MainAct)MainAct._Main_Activity;
-////                                    MA.bulletinFragment.getFirebaseBoardList();
-//                                   MA.finish();
-//                                    Intent intent = new Intent(ShowPostAct.this, MainAct.class);
-//                                    startActivity(intent);
-//                                    finish();
 
                                 }
                             }

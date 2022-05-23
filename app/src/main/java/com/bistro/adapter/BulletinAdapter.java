@@ -47,7 +47,6 @@ private ListFragment.LikeInterface likeInterface;
         this.type = type;
         this.list_uri = list_uri;
 
-
     }
 
     public BulletinAdapter(Fragment fragment, ArrayList list, ArrayList key, String type) {
@@ -75,6 +74,7 @@ private ListFragment.LikeInterface likeInterface;
         holder.tv_title.setText(list_post.get(position).getTitle());
         holder.tv_store_name.setText(list_post.get(position).getStoreName());
         holder.tv_like.setText(list_post.get(position).getLike());
+        holder.tv_click.setText(list_post.get(position).getClick());
 //        holder.tv_date.setText(list_post.get(position).getDate());
 //        Glide.with(mContext).load(list_uri.get(position)).into(holder.iv_img);
 
@@ -127,6 +127,7 @@ private ListFragment.LikeInterface likeInterface;
              tv_like = itemView.findViewById(R.id.tv_like);
              iv_like = itemView.findViewById(R.id.iv_like);
 //             tv_date = itemView.findViewById(R.id.tv_date);
+            tv_click = itemView.findViewById(R.id.tv_click_value);
 
             itemView.setOnClickListener(view1 -> {
 

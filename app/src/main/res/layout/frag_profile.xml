@@ -180,6 +180,36 @@
                     android:background="@color/gray_light2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            // 로그아웃
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:id="@+id/const_logout"
+                app:layout_constraintTop_toBottomOf="@id/const_privacy"
+                app:layout_constraintLeft_toLeftOf="parent">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tv_logout"
+                    android:text="로그아웃"
+                    android:gravity="center_vertical"
+                    android:textSize="@dimen/twentyFive"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="@dimen/ten"
+                    android:paddingLeft="@dimen/thirty"
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/gray_light2"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"/>
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
