@@ -1,7 +1,14 @@
 package com.bistro.fragment;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -17,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,9 +45,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.FileVisitResult;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * author ban8826
  * summary 메인 화면 프래그먼트
@@ -53,10 +65,9 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
     private ArrayList<PostModel> list_post;       // real list
     private ArrayList<PostModel> mLstPostGet;    // 리스트를 20개씩만 담을 임시 array
     private ArrayList<String>    list_key; // 마지막에 불러온 item 을 find 하기 위한 임시 array
-    private String               mStrOldBoardId; // 마지막에 불러온 item id
-    private String randomKey;
+    private String current_location;
     private ProgressDialog mProgressDialog;     // 로딩 프로그레스
-    private TextView tv_like_order, tv_recent_order, mTvMsgEmpty;               // 게시글이 0개일 때 empty text
+    private TextView tv_like_order, tv_recent_order, tv_area, mTvMsgEmpty;               // 게시글이 0개일 때 empty text
     private View view;
     private ProgressBar loadingProgress;
 
@@ -65,11 +76,15 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
 
     // 검색 버튼
     private ImageView iv_search;
+    private Context context;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        context = container.getContext();
         return inflater.inflate(R.layout.frag_list, container, false);
+
         // onCreateView 에서 findviewbyid()를 사용하면 충돌이 일어날수 있기에 사용하면 안된다
     }
 
@@ -80,6 +95,7 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
         this.view = view;
         startLoadingProgress();
         setInitialize(view);
+        setCurrentLocation();
     }
 
     private void setInitialize(View view) {
@@ -89,6 +105,8 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
 
         recycler = view.findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
+
+        tv_area = view.findViewById(R.id.tv_title);
 
         iv_search = view.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
@@ -137,6 +155,49 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
         getFirebaseBoardList();
     }
 
+    void setCurrentLocation()
+    {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+
+        List<Address> list_address = null;
+        Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+        try {
+            list_address = geocoder.getFromLocation(latitude, longitude, '1');
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        String address = list_address.get(0).getAddressLine(0);
+        String[] split = address.split(" ");
+        for(int i=0; i<split.length; i++)
+        {
+            if(split[i].endsWith("동"))
+            {
+                current_location = split[i];
+            }
+        }
+
+        tv_area.setText(current_location);
+
+
+    }
+
     public void getFirebaseBoardList() {
         // load firebase db listk
 
@@ -162,8 +223,6 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
                         String nickName = postModel.getNickName(); // 이 부분을 쉐어드에서 유저아이디를 가져와서 리스트 안보였었음.
                         String fileName = nickName + postModel.getDate();
                         String name_img = nickName + '1';
-
-
 
 //                        storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
 //

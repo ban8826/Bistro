@@ -1,10 +1,18 @@
 package com.bistro.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -16,6 +24,11 @@ import com.bistro.fragment.ListFragment;
 import com.bistro.fragment.MyInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+import java.util.StringTokenizer;
+
 public class MainAct extends AppCompatActivity implements View.OnClickListener {
 
 
@@ -23,11 +36,12 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 //    private AppDatabase mLocalDatabase;
     public static Activity _Main_Activity;
     public ListFragment bulletinFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.act_main);
-        _Main_Activity  = MainAct.this;
+        _Main_Activity = MainAct.this;
         init();
 //       setInitialize();
     }
@@ -119,8 +133,6 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -129,7 +141,7 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onStop() {
         super.onStop();
-      }
+    }
 
     @Override
     protected void onRestart() {
@@ -145,5 +157,7 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+
+
     }
 }
