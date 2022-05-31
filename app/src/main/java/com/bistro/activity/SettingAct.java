@@ -13,10 +13,8 @@ import com.bistro.R;
 import com.bistro.database.Const;
 import com.bistro.database.SharedManager;
 import com.google.firebase.auth.FirebaseAuth;
-;
 
 /**
- * author hongdroid94
  * summary 설정 화면
  */
 public class SettingAct extends AppCompatActivity implements View.OnClickListener {

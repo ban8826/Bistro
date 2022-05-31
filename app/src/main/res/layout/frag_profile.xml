@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_top"
         android:layout_width="match_parent"
@@ -70,29 +69,68 @@
                 app:layout_constraintLeft_toLeftOf="parent">
 
 
-                <ImageView
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:id="@+id/iv_profile"
-                    android:src="@drawable/ic_baseline_face_24"
+<!--                <ImageView-->
+<!--                    android:layout_width="100dp"-->
+<!--                    android:layout_height="100dp"-->
+<!--                    android:id="@+id/iv_profile"-->
+<!--                    android:src="@drawable/ic_baseline_face_24"-->
+<!--                    app:layout_constraintTop_toTopOf="parent"-->
+<!--                    app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                    android:layout_margin="@dimen/ten"/>-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/oneHundred"
+                    android:id="@+id/tv_nickName"
+                    android:text="별명 : "
+                    android:textSize="@dimen/twenty"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginLeft="@dimen/twenty"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:layout_margin="@dimen/ten"/>
+                    app:layout_constraintLeft_toLeftOf="parent"/>
+
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:id="@+id/tv_nickName"
+                    android:id="@+id/tv_nickName_value"
                     android:text="닉네임"
                     android:textSize="@dimen/twenty"
                     android:textColor="@color/black"
                     android:layout_marginLeft="@dimen/ten"
                     android:textStyle="bold"
                     android:gravity="center_vertical"
-                    app:layout_constraintTop_toTopOf="@id/iv_profile"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
-                    app:layout_constraintLeft_toRightOf="@id/iv_profile"
+                    app:layout_constraintTop_toTopOf="@id/tv_nickName"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_nickName"
+                    app:layout_constraintLeft_toRightOf="@id/tv_nickName"
                     app:layout_constraintRight_toRightOf="parent"/>
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_like"
+                    android:text="* 받은 공감수 : "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fifteen"
+                    app:layout_constraintTop_toBottomOf="@id/tv_nickName"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="@id/tv_nickName"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tv_like_value"
+                    android:text=""
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/fifteen"
+                    android:layout_marginLeft="@dimen/five"
+                    app:layout_constraintTop_toBottomOf="@id/tv_nickName"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@id/tv_like"/>
+
 
 
                 <View
@@ -130,38 +168,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            // 설정 콘스트
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:id="@+id/const_setting"
-                app:layout_constraintTop_toBottomOf="@id/const_rank"
-                app:layout_constraintLeft_toLeftOf="parent">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/tv_setting"
-                    android:text="설정"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/twentyFive"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="@dimen/ten"
-                    android:paddingLeft="@dimen/thirty"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_light2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             // 개인정보보호 콘스트
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:id="@+id/const_privacy"
-                app:layout_constraintTop_toBottomOf="@id/const_setting"
+                app:layout_constraintTop_toBottomOf="@id/const_rank"
                 app:layout_constraintLeft_toLeftOf="parent">
                 <TextView
                     android:layout_width="match_parent"
@@ -184,33 +198,6 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            // 로그아웃
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:id="@+id/const_logout"
-                app:layout_constraintTop_toBottomOf="@id/const_privacy"
-                app:layout_constraintLeft_toLeftOf="parent">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/tv_logout"
-                    android:text="로그아웃"
-                    android:gravity="center_vertical"
-                    android:textSize="@dimen/twentyFive"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="@dimen/ten"
-                    android:paddingLeft="@dimen/thirty"
-                    />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="@color/gray_light2"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"/>
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

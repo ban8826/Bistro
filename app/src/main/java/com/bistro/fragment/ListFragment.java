@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +37,7 @@ import com.bistro.adapter.BulletinAdapter;
 import com.bistro.database.SharedManager;
 import com.bistro.model.PostModel;
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.melnykov.fab.FloatingActionButton;
@@ -62,17 +64,22 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
     public BulletinAdapter bulletinAdapter;
     private DatabaseReference databaseReference;
 
-    private ArrayList<PostModel> list_post;       // real list
+    private ArrayList<PostModel> list_post, list_selected;       // real list
     private ArrayList<PostModel> mLstPostGet;    // 리스트를 20개씩만 담을 임시 array
     private ArrayList<String>    list_key; // 마지막에 불러온 item 을 find 하기 위한 임시 array
     private String current_location;
     private ProgressDialog mProgressDialog;     // 로딩 프로그레스
-    private TextView tv_like_order, tv_recent_order, tv_area, mTvMsgEmpty;               // 게시글이 0개일 때 empty text
+    private TextView tv_like_order, tv_recent_order, tv_area, tv_no_content;               // 게시글이 0개일 때 empty text
     private View view;
     private ProgressBar loadingProgress;
 
     private StorageReference storageReference;
     private ArrayList<Uri> list_uri;
+
+    String[] REQUIRED_PERMISSIONS  = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};  // 외부 저장소
+    private static final int PERMISSIONS_REQUEST_CODE = 100;
+    private View mLayout;  // Snackbar 사용하기 위해서는 View가 필요합니다.
+
 
     // 검색 버튼
     private ImageView iv_search;
@@ -93,18 +100,22 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
         super.onViewCreated(view, savedInstanceState);
         // onViewCreated() 에서는 뷰가 모두 완전히 생성되었음을 의미하기 때문에 여기서 findViewByid() 함수를 사용해야 한다
         this.view = view;
+        current_location = "";
         startLoadingProgress();
         setInitialize(view);
-        setCurrentLocation();
+
     }
 
     private void setInitialize(View view) {
         mLstPostGet = new ArrayList<>();
         list_key = new ArrayList<>();
         list_post = new ArrayList<>();
+        list_selected = new ArrayList<>();
 
         recycler = view.findViewById(R.id.recycler);
         recycler.setHasFixedSize(true);
+
+        tv_no_content = view.findViewById(R.id.tv_no_content);
 
         tv_area = view.findViewById(R.id.tv_title);
 
@@ -152,6 +163,8 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
 //        fab.attachToRecyclerView(mRvPromise);
         fab.show();
 
+//        setCurrentLocation();
+
         getFirebaseBoardList();
     }
 
@@ -168,6 +181,34 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+
+
+            // 3-1. 사용자가 퍼미션 거부를 한 적이 있는 경우에는
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), REQUIRED_PERMISSIONS[0]))
+            {
+
+                // 3-2. 요청을 진행하기 전에 사용자가에게 퍼미션이 필요한 이유를 설명해줄 필요가 있습니다.
+                Snackbar.make(mLayout, "이 앱을 실행하려면 위치 접근 권한이 필요합니다.",
+                        Snackbar.LENGTH_INDEFINITE).setAction("확인", new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+
+                        // 3-3. 사용자게에 퍼미션 요청을 합니다. 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                        ActivityCompat.requestPermissions( getActivity(), REQUIRED_PERMISSIONS,
+                                PERMISSIONS_REQUEST_CODE);
+                    }
+                }).show();
+            }
+
+            else
+            {
+                // 4-1. 사용자가 퍼미션 거부를 한 적이 없는 경우에는 퍼미션 요청을 바로 합니다.
+                // 요청 결과는 onRequestPermissionResult에서 수신됩니다.
+                ActivityCompat.requestPermissions( getActivity(), REQUIRED_PERMISSIONS,
+                        PERMISSIONS_REQUEST_CODE);
+            }
+
             return;
         }
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -182,7 +223,13 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
             e.printStackTrace();
         }
 
-
+        /**
+         *
+         *
+         * ~동 중심으로 가려했으나 신주소 ~대로 로 나오는 이슈 해결 미지수
+         *
+         *
+         */
         String address = list_address.get(0).getAddressLine(0);
         String[] split = address.split(" ");
         for(int i=0; i<split.length; i++)
@@ -192,8 +239,9 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
                 current_location = split[i];
             }
         }
+        Toast.makeText(context, current_location, Toast.LENGTH_SHORT).show();
 
-        tv_area.setText(current_location);
+
 
 
     }
@@ -207,13 +255,20 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
 
                 list_post.clear();
                 list_key.clear();
-                if (dataSnapshot.getChildrenCount() != 0) {
+                if (dataSnapshot.getChildrenCount() != 0)
+                {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         PostModel postModel = snapshot.getValue(PostModel.class);
                         // 최신글 역순 정렬을 위한 역순 add
-                        list_post        .add(0, postModel);
-                        list_key.add(0, snapshot.getKey());
+//                        if(postModel.getAddress() !=null) {
+//                           /** '현재위치'가 포함되어있는지 contains() 함수로 판단하는 부분 **/
+//                            if (postModel.getAddress().contains(current_location)) {
+                                list_post.add(0, postModel);
+                                list_key.add(0, snapshot.getKey());
+//                            }
+//                        }
                     }
+
 
                     /** Storage에서 이미지를 가져온 다음에 어댑터에 전달해서 리스트의 글과 사진이 함께 화면에 보이도록.
                      * 이미지 개수가 많아지면 개수를 정해서 몇개씩만 로드하고 아래로 스크롤 하면 추가로 보이도록 코딩해야할것
@@ -236,12 +291,19 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
                             recycler.setAdapter(bulletinAdapter);
                             bulletinAdapter.notifyDataSetChanged();
 //                   setProgressDialog(null, false);
-
+                        tv_area.setText(current_location);
 
                         finishLoadingProgress();
 //                            }
 //                        });
                     }
+                }
+
+                // 게시글이 없을때 !!!!
+                else
+                {
+                    tv_no_content.setVisibility(View.VISIBLE);
+                    finishLoadingProgress();
                 }
             }
 
@@ -311,8 +373,13 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 PostModel postModel = snapshot.getValue(PostModel.class);
                                 // 최신글 역순 정렬을 위한 역순 add
-                                list_post        .add(0, postModel);
-                                list_key.add(0, snapshot.getKey());
+                                if(postModel.getAddress() !=null) {
+
+                                    if (postModel.getAddress().contains(current_location)) {
+                                        list_post.add(0, postModel);
+                                        list_key.add(0, snapshot.getKey());
+                                    }
+                                }
                             }
 
                             bulletinAdapter = new BulletinAdapter(ListFragment.this, list_post, list_key, "list");

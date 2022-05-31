@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import com.bistro.R;
+import com.bistro.activity.AccountAct;
 import com.bistro.activity.LoginAct;
 import com.bistro.activity.SettingAct;
 import com.bistro.database.SharedManager;
@@ -35,7 +36,7 @@ import com.kakao.usermgmt.response.model.UserAccount;
 
 public class MyInfoFragment extends Fragment implements View.OnClickListener {
 
-    private TextView tv_nickName, tv_rank, tv_setting, tv_privacy, tv_logout;
+    private TextView tv_nickName, tv_rank, tv_like, tv_privacy, tv_logout;
     private DatabaseReference databaseReference;
 
     @Nullable
@@ -53,20 +54,32 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
     private void setInitialize(View _view) {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("bistro");
+        String authToken = SharedManager.read(SharedManager.AUTH_TOKEN, "");
 
         _view.findViewById(R.id.btn_setting).setOnClickListener(this);
-        tv_nickName = _view.findViewById(R.id.tv_nickName);
+        tv_nickName = _view.findViewById(R.id.tv_nickName_value);
         tv_rank = _view.findViewById(R.id.tv_rank);
-        tv_setting = _view.findViewById(R.id.tv_setting);
         tv_privacy = _view.findViewById(R.id.tv_privacy);
-        tv_logout = _view.findViewById(R.id.tv_logout);
-        tv_logout.setOnClickListener(this);
         tv_nickName.setText(SharedManager.read(SharedManager.USER_NAME,""));
+        tv_like = _view.findViewById(R.id.tv_like_value);
 
         tv_nickName.setOnClickListener(this);
         tv_rank.setOnClickListener(this);
-        tv_setting.setOnClickListener(this);
         tv_privacy.setOnClickListener(this);
+
+        databaseReference.child("userInfo").child(authToken).child("like").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                String like = (String) snapshot.getValue();
+                tv_like.setText(like);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -78,15 +91,12 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
                 getLogoutResult.launch(settingIntent);
                 break;
 
-            case R.id.tv_nickName:
-
+            case R.id.tv_nickName_value:
+                Intent settingIntent1 = new Intent(getContext(), AccountAct.class);
+                getLogoutResult.launch(settingIntent1);
                 break;
 
             case R.id.tv_rank:
-
-                break;
-
-            case R.id.tv_setting:
 
                 break;
 

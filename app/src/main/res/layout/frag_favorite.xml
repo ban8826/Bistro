@@ -31,7 +31,7 @@
         // 검색버튼
         <ImageView
             android:id="@+id/iv_search"
-            android:layout_width="70dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:src="@drawable/search_button"
             android:layout_marginRight="@dimen/twenty"
@@ -58,19 +58,13 @@
         <!--            android:hint="학원이름을 검색해주세요"/>-->
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/gray_light"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/const_middle"
-        android:background="@color/gray_light3"
+        android:background="@color/orange_light"
         app:layout_constraintTop_toBottomOf="@id/const_top"
         app:layout_constraintLeft_toLeftOf="parent">
 
@@ -135,6 +129,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:id="@+id/tv_no_content"
+      android:text="아직 즐겨찾기 목록이 없습니다"
+      android:textSize="@dimen/fifteen"
+      android:textColor="@color/black"
+      android:visibility="invisible"
+      app:layout_constraintTop_toBottomOf="@id/const_top"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

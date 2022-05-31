@@ -10,6 +10,7 @@
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/border_black_inside_10.xml" value="0.125" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/border_gray_inside_10.xml" value="0.1725" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/border_green_inside_10.xml" value="0.162" />
+        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/border_orange_inside.xml" value="0.106" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/border_white_green_square.xml" value="0.1455" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/default_dot.xml" value="0.1455" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/ic_baseline_thumb_down_24.xml" value="0.1795" />
@@ -20,17 +21,19 @@
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/img_setting.xml" value="0.1105" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/selected_dot.xml" value="0.1455" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable/tab_selector.xml" value="0.1455" />
+        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_account.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_detail_post.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_favorite.xml" value="0.1515625" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_login.xml" value="0.15677083333333333" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_main.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_register.xml" value="0.15677083333333333" />
+        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_remove_account.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_search.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_setting.xml" value="0.15260416666666668" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_show_post.xml" value="0.22" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_splash.xml" value="0.15677083333333333" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_write_post.xml" value="0.22" />
-        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_write_post_copy.xml" value="0.17916666666666667" />
+        <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/act_write_post_copy.xml" value="0.22" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/activity_main.xml" value="0.17916666666666667" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/dialog_search_address.xml" value="0.14375" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/layout/frag_favorite.xml" value="0.17916666666666667" />

@@ -33,6 +33,8 @@
         <activity android:name=".activity.LoginAct"/>
         <activity android:name=".activity.JoinAct"/>
         <activity android:name=".activity.FavoriteAct"/>
+        <activity android:name=".activity.AccountAct"/>
+        <activity android:name=".activity.RemoveAccountAct"/>
         <activity android:name=".activity.SplashAct"
             android:exported="true">
         </activity>

@@ -9,14 +9,21 @@ public class UserModel {
     private String fcmToken;        // 사용자 푸시토큰
     private String authToken;       // 계정토큰
     private String area;            // 동네 인증 정보
-    private String mbti;            // MBTI 정보
     private String introduce;       // 자기소개 한마디, 칭호
     private HashMap<String, PostModel> favorite;
-
+    private String like;
     public UserModel() { }
 
     public String getId() {
         return id;
+    }
+
+    public void setLike(String like) {
+        this.like = like;
+    }
+
+    public String getLike() {
+        return like;
     }
 
     public void setId(String id) {
@@ -70,14 +77,6 @@ public class UserModel {
 
     public void setArea(String area) {
         this.area = area;
-    }
-
-    public String getMbti() {
-        return mbti;
-    }
-
-    public void setMbti(String mbti) {
-        this.mbti = mbti;
     }
 
     public String getIntroduce() {

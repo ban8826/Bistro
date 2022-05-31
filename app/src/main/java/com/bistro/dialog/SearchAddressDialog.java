@@ -35,13 +35,13 @@ public class SearchAddressDialog extends Dialog {
 
     private RetrofitMain retrofitMain;
 
-    private FragmentManager fm;
+    private final FragmentManager fm;
     private SearchAddressAdapter adapter;
 
     private ResultListener listener;
 
     public interface ResultListener {
-        void onResult(KakaoPlaceModel.PoiPlace place);
+        void onResult(KakaoPlaceModel.PoiPlace place, String name);
     }
 
     public void setResultListener(ResultListener listener) {
@@ -84,10 +84,10 @@ public class SearchAddressDialog extends Dialog {
             }
         });
 
-        if (strName != null && !strName.isEmpty()) {
-            etName.setText(strName);
-            retrofitMain.getSearchPoiFood(strName);
-        }
+//        if (strName != null && !strName.isEmpty()) {
+//            etName.setText(strName);
+//            retrofitMain.getSearchPoiFood(strName);
+//        }
 
         ivSearch.setOnClickListener(view -> {
             // 검색
@@ -99,7 +99,8 @@ public class SearchAddressDialog extends Dialog {
                 retrofitMain.getSearchPoiFood(name);
                 retrofitMain.getSearchPoiCafe(name);
             }
-        });
+        }
+        );
     }
 
     public void onResult(KakaoPlaceModel.PoiPlace place) {
@@ -108,7 +109,7 @@ public class SearchAddressDialog extends Dialog {
             public void run() {
                 if (listener != null) {
                     Log.d(TAG, "onResult !! listener onResult !!");
-                    listener.onResult(place);
+                    listener.onResult(place,etName.getText().toString());
                     dismiss();
                 }
             }

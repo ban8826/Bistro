@@ -167,16 +167,11 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-
-
     }
 
 
@@ -192,6 +187,12 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
              *              좋아요 버튼
              */
             case R.id.iv_like:
+
+                if (postModel.getUserId().equals(SharedManager.read(SharedManager.LOGIN_ID,"")))
+                {
+                    Toast.makeText(context, "본인의 게시글은 공감할 수 없습니다", Toast.LENGTH_SHORT).show();
+                      break;
+                }
 
                 databaseReference.child("postInfo").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -233,20 +234,46 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
                                     Toast.makeText(context, "이미 선택했습니다", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                // 공감 누른적 없음 (비공감 누른여부 확인해야함)
+
+                                // 공감 누른적 없음
                                 else {
 
-                                    /** UserInfo의 해당 유저에 공감수를 넣는다면 여기에 추가.
+                                    /**
+                                     *  원래는 공감 누르고 비공감 누르면 공감이 풀리는 형태로 구현하려 했으나
+                                     *  한번 공감이나 비공감 누르면 취소 안되는쪽으로 구현하기로.
                                      *  처음부터 누적시킬것인지 기간별로 나눠서 삭제할것인지 기획적으로 생각해볼것.
                                      *  2022.4.22
                                      */
 
-                                    // 공감 +1 하기
-                                    databaseReference.child("postInfo").child(key).child("like").setValue(String.valueOf(int_like));
-                                    // 공감 리스트에 추가
-//                                    databaseReference.child("postInfo").child(key).child("like_list").push().setValue(likeModel);
+                                    String authToken = postModel.getAuthToken(); // UserInfo의 랜덤키
 
-                                    Toast.makeText(context, "공감했습니다", Toast.LENGTH_SHORT).show();
+                                    // 게시자의 유저인포에 공감수 +1 시키기 위해서 리스너
+                                    databaseReference.child("userInfo").child(authToken).child("like").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String like_value = (String) snapshot.getValue();
+                                            Log.d("d", like_value);
+                                            int like_int = Integer.parseInt(like_value) + 1;
+
+                                            /** 게시자의 userInfo에 공감수 +1 하기 **/
+                                            databaseReference.child("userInfo").child(authToken).child("like").setValue(String.valueOf(like_int));
+
+                                            // 공감 +1 하기
+                                            databaseReference.child("postInfo").child(key).child("like").setValue(String.valueOf(int_like));
+
+                                            // 공감 리스트에 추가
+                                    databaseReference.child("postInfo").child(key).child("like_list").push().setValue(likeModel);
+
+                                            Toast.makeText(context, "공감했습니다", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+
 
                                 }
                             }
@@ -265,6 +292,11 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
              */
             case R.id.iv_dislike:
 
+                if (postModel.getUserId().equals(SharedManager.read(SharedManager.LOGIN_ID,"")))
+                {
+                    Toast.makeText(context, "본인의 게시글은 공감할 수 없습니다", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 /** 게시글의 좋아요가 0이면 반영되지 않는다. 좋아요 0보다 크면 -1을 시키지만 이미 비공감을 눌렀으면 반영되지 않는다.
                  * 좋아요를 누른적 없고 비공감이 정상 반영되는 좋아요의 경우처럼 파베의 like_list에 추가된다.
                  * like_list에서 좋아요를 누르든 비공감을 누르든 같이 관리함으로써 코드 용이성 확보.
