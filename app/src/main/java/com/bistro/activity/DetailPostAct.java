@@ -1,12 +1,10 @@
 package com.bistro.activity;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,7 +21,6 @@ import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bistro.R;
-import com.bistro.adapter.BulletinAdapter;
 import com.bistro.adapter.RelatedAdapter;
 import com.bistro.adapter.ViewPagerAdapter;
 import com.bistro.database.SharedManager;
@@ -32,8 +29,6 @@ import com.bistro.fragment.NaverMapFragment;
 import com.bistro.model.PostLikeModel;
 import com.bistro.model.PostModel;
 import com.bistro.model.UserLikeModel;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.tasks.DuplicateTaskCompletionException;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DataSnapshot;
@@ -43,14 +38,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.naver.maps.map.MapView;
-import com.naver.maps.map.NaverMap;
-import com.naver.maps.map.OnMapReadyCallback;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ShowPostAct extends AppCompatActivity implements View.OnClickListener {
+public class DetailPostAct extends AppCompatActivity implements View.OnClickListener {
 
 
     private ImageView iv_back, iv_like, iv_dislike, iv_favorite;
@@ -79,11 +70,12 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
     private ListFragment likeInterface;
     private NaverMapFragment naverMapFragment;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.act_show_post);
+        setContentView(R.layout.act_detail_post);
 
         context = getApplicationContext();
         intent = getIntent();
@@ -93,6 +85,8 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         post_id = postModel.getId();  /** 게시글만의 유니크한 아이디 (랜덤키 + 날짜) **/
         databaseReference = FirebaseDatabase.getInstance().getReference("bistro");
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bistro-5bc79.appspot.com");
+
+
 
         tv_menu = findViewById(R.id.tv_menu_value);
         tv_content = findViewById(R.id.tv_content);
@@ -146,27 +140,40 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
         /** 파베에서 관련글 데이터 가져오는 부분 **/
         getFirebaseBoardList();
 
+        new Handler().postDelayed(() -> {
+            // 네이버지도 불러오는 부분
+            FragmentManager fragmentManager = getSupportFragmentManager();
+//            String address = postModel.getAddress();
+            // 예시.
+            String address = "04058, 서울 마포구 서강로 131 (노고산동)";
+            if(naverMapFragment == null)
+            {
+                naverMapFragment = new NaverMapFragment(address);
 
+            }
+            fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
+            // 조회수 구현하는 부분
+            String str_click = postModel.getClick();
+            int int_click = Integer.parseInt(str_click) + 1;
+            // 조회수 파베에 저장
+            databaseReference.child("postInfo").child(key).child("click").setValue(String.valueOf(int_click));
+        }, 500);
+
+
+
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // 네이버지도 불러오는 부분
-        FragmentManager fragmentManager = getSupportFragmentManager();
-//            String address = postModel.getAddress();
-        // 예시.
-        String address = "04058, 서울 마포구 서강로 131 (노고산동)";
-        naverMapFragment = new NaverMapFragment(address);
-        fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
     }
 
-    public void changeAct()
-    {
-        Intent intent = new Intent(ShowPostAct.this, NaverMapAct.class);
-        startActivity(intent);
-    }
 
     @Override
     public void onClick(View view) {
@@ -180,6 +187,12 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
              *              좋아요 버튼
              */
             case R.id.iv_like:
+
+                if (postModel.getUserId().equals(SharedManager.read(SharedManager.LOGIN_ID,"")))
+                {
+                    Toast.makeText(context, "본인의 게시글은 공감할 수 없습니다", Toast.LENGTH_SHORT).show();
+                      break;
+                }
 
                 databaseReference.child("postInfo").child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -221,26 +234,46 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
                                     Toast.makeText(context, "이미 선택했습니다", Toast.LENGTH_SHORT).show();
                                     return;
                                 }
-                                // 공감 누른적 없음 (비공감 누른여부 확인해야함)
+
+                                // 공감 누른적 없음
                                 else {
 
-                                    /** UserInfo의 해당 유저에 공감수를 넣는다면 여기에 추가.
+                                    /**
+                                     *  원래는 공감 누르고 비공감 누르면 공감이 풀리는 형태로 구현하려 했으나
+                                     *  한번 공감이나 비공감 누르면 취소 안되는쪽으로 구현하기로.
                                      *  처음부터 누적시킬것인지 기간별로 나눠서 삭제할것인지 기획적으로 생각해볼것.
                                      *  2022.4.22
                                      */
 
-                                    // 공감 +1 하기
-                                    databaseReference.child("postInfo").child(key).child("like").setValue(String.valueOf(int_like));
-                                    // 공감 리스트에 추가
-//                                    databaseReference.child("postInfo").child(key).child("like_list").push().setValue(likeModel);
+                                    String authToken = postModel.getAuthToken(); // UserInfo의 랜덤키
 
-                                    Toast.makeText(context, "공감했습니다", Toast.LENGTH_SHORT).show();
-//                                    MainAct MA = (MainAct)MainAct._Main_Activity;
-////                                    MA.bulletinFragment.getFirebaseBoardList();
-//                                   MA.finish();
-//                                    Intent intent = new Intent(ShowPostAct.this, MainAct.class);
-//                                    startActivity(intent);
-//                                    finish();
+                                    // 게시자의 유저인포에 공감수 +1 시키기 위해서 리스너
+                                    databaseReference.child("userInfo").child(authToken).child("like").addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String like_value = (String) snapshot.getValue();
+                                            Log.d("d", like_value);
+                                            int like_int = Integer.parseInt(like_value) + 1;
+
+                                            /** 게시자의 userInfo에 공감수 +1 하기 **/
+                                            databaseReference.child("userInfo").child(authToken).child("like").setValue(String.valueOf(like_int));
+
+                                            // 공감 +1 하기
+                                            databaseReference.child("postInfo").child(key).child("like").setValue(String.valueOf(int_like));
+
+                                            // 공감 리스트에 추가
+                                    databaseReference.child("postInfo").child(key).child("like_list").push().setValue(likeModel);
+
+                                            Toast.makeText(context, "공감했습니다", Toast.LENGTH_SHORT).show();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+
+
 
                                 }
                             }
@@ -259,6 +292,11 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
              */
             case R.id.iv_dislike:
 
+                if (postModel.getUserId().equals(SharedManager.read(SharedManager.LOGIN_ID,"")))
+                {
+                    Toast.makeText(context, "본인의 게시글은 공감할 수 없습니다", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 /** 게시글의 좋아요가 0이면 반영되지 않는다. 좋아요 0보다 크면 -1을 시키지만 이미 비공감을 눌렀으면 반영되지 않는다.
                  * 좋아요를 누른적 없고 비공감이 정상 반영되는 좋아요의 경우처럼 파베의 like_list에 추가된다.
                  * like_list에서 좋아요를 누르든 비공감을 누르든 같이 관리함으로써 코드 용이성 확보.
@@ -424,7 +462,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
                                  imageList.add(uri);
 
                                  /** 2021. 10. 23 어댑터를 한번만 실행시키도록 수정하려했으나 실패 **/
-                                 PagerAdapter adapter = new ViewPagerAdapter(ShowPostAct.this, imageList);
+                                 PagerAdapter adapter = new ViewPagerAdapter(DetailPostAct.this, imageList);
                                  viewPager.setAdapter(adapter);
                                  adapter.notifyDataSetChanged();
                              }
@@ -454,7 +492,7 @@ public class ShowPostAct extends AppCompatActivity implements View.OnClickListen
                         list_key.add(0, snapshot.getKey());
                     }
 
-                    relatedAdapter = new RelatedAdapter(ShowPostAct.this, list_post, list_key);
+                    relatedAdapter = new RelatedAdapter(DetailPostAct.this, list_post, list_key);
                     rv_related.setAdapter(relatedAdapter);
                     relatedAdapter.notifyDataSetChanged();
 //                   setProgressDialog(null, false);

@@ -8,4 +8,6 @@
     <string name="join">회원가입</string>
     <string name="login">로그인</string>
     <string name="FORGOT_ID_PWD"><u>비밀번호를 잊으셨나요?</u></string>
+    <string name="remove_account">회원을 탈퇴하면 기존의 데이터를 복구하는 것이 불가능하오니 한번더 데이터 손실에 대한 충분한 고려를 해주시기 바랍니다. 최종적으로 회원 탈퇴를 결정하셨다면 아래의 탈퇴버튼을 눌러주시고, 다음 기회에 더 나은 서비스로 찾아뵙길 바라겠습니다. 안녕히 가십시오.</string>
+
 </resources>

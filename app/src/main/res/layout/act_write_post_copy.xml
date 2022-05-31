@@ -107,21 +107,35 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/HEIGHT_EDIT_TEXT">
 
-                        <EditText
-                            android:id="@+id/a_write_post_et_name"
-                            android:layout_width="match_parent"
+                        <TextView
+                            android:id="@+id/a_write_post_tv_name"
+                            android:layout_width="230dp"
                             android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
                             android:hint="맛집을 찾아주세요."
                             android:singleLine="true"
                             />
 
-                        <ImageView
-                            android:id="@+id/a_write_post_iv_search_poi"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:padding="10dp"
-                            android:src="@drawable/img_search"
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:id="@+id/tv_search_store"
+                            android:text="맛집 검색"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/fifteen"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/five"
+                            android:layout_marginBottom="@dimen/five"
+                            android:layout_marginRight="@dimen/ten"
+                            android:background="@drawable/border_orange_inside"
                             android:layout_gravity="center|end"/>
+
+<!--                        <ImageView-->
+<!--                            android:id="@+id/a_write_post_iv_search_poi"-->
+<!--                            android:layout_width="40dp"-->
+<!--                            android:layout_height="40dp"-->
+<!--                            android:padding="10dp"-->
+<!--                            android:src="@drawable/img_search"-->
+<!--                            android:layout_gravity="center|end"/>-->
                     </FrameLayout>
 
                     <LinearLayout

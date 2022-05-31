@@ -15,6 +15,7 @@
     <color name="gray_light3">#F1ECEC</color>
     <color name="gray_dark">#5C5A5A</color>
     <color name="orange">#E6500B</color>
+    <color name="orange_light">#FDCAB3</color>
     <color name="green">#00bdbd</color>
 
     <!-- fab color -->

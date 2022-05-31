@@ -18,9 +18,9 @@
             android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="현재동"
-            android:textSize="30dp"
-            android:textColor="@color/teal_700"
+            android:text=""
+            android:textSize="25dp"
+            android:textColor="@color/black"
             android:textStyle="bold"
             android:layout_marginLeft="20dp"
             app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +31,7 @@
         // 검색버튼
         <ImageView
             android:id="@+id/iv_search"
-            android:layout_width="70dp"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:src="@drawable/search_button"
             android:layout_marginRight="@dimen/twenty"
@@ -58,54 +58,54 @@
 <!--            android:hint="학원이름을 검색해주세요"/>-->
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/gray_light"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+<!--        <View-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="2dp"-->
+<!--            android:background="@color/gray_light3"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"/>-->
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:id="@+id/const_middle"
-        android:background="@color/gray_light3"
+        android:background="@color/orange_light"
         app:layout_constraintTop_toBottomOf="@id/const_top"
         app:layout_constraintLeft_toLeftOf="parent">
 
        <TextView
-           android:layout_width="75dp"
+           android:layout_width="65dp"
            android:layout_height="match_parent"
            android:id="@+id/tv_like"
            android:text="공감순"
-           android:textColor="@color/white"
-           android:textSize="@dimen/fifteen"
+           android:textColor="@color/black"
+           android:textSize="@dimen/twelve"
            android:gravity="center"
-           android:layout_marginTop="@dimen/fifteen"
-           android:layout_marginBottom="@dimen/fifteen"
+           android:layout_marginTop="@dimen/seven"
+           android:layout_marginBottom="@dimen/seven"
            android:layout_marginRight="@dimen/ten"
            app:layout_constraintRight_toRightOf="parent"
            app:layout_constraintTop_toTopOf="parent"
            app:layout_constraintBottom_toBottomOf="parent"
-           android:background="@drawable/border_gray_inside_10"
+           android:background="@drawable/border_black_10"
 />
 
         <TextView
-            android:layout_width="75dp"
+            android:layout_width="65dp"
             android:layout_height="match_parent"
             android:id="@+id/tv_recent"
             android:text="최신순"
-            android:textColor="@color/white"
-            android:textSize="@dimen/fifteen"
+            android:textColor="@color/black"
+            android:textSize="@dimen/twelve"
             android:gravity="center"
-            android:layout_marginTop="@dimen/fifteen"
-            android:layout_marginBottom="@dimen/fifteen"
+            android:layout_marginTop="@dimen/seven"
+            android:layout_marginBottom="@dimen/seven"
             android:layout_marginRight="@dimen/ten"
             app:layout_constraintRight_toLeftOf="@id/tv_like"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:background="@drawable/border_gray_inside_10"
+            android:background="@drawable/border_black_10"
             />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -150,6 +150,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/const_middle" />
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_no_content"
+        android:text="이 동네의 첫번째 게시글을 올려보세요!"
+        android:textSize="@dimen/fifteen"
+        android:textColor="@color/black"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@id/const_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

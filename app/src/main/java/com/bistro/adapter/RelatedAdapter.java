@@ -10,12 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bistro.R;
-import com.bistro.activity.FavoriteAct;
-import com.bistro.activity.ShowPostAct;
+import com.bistro.activity.DetailPostAct;
 import com.bistro.database.SharedManager;
 import com.bistro.model.PostModel;
 import com.bumptech.glide.Glide;
@@ -107,7 +105,7 @@ public class RelatedAdapter extends RecyclerView.Adapter<RelatedAdapter.BoardVie
                 int adapterPosition = getAdapterPosition();
                 String key = list_key.get(adapterPosition);
 
-                    Intent intent = new Intent(activity, ShowPostAct.class);
+                    Intent intent = new Intent(activity, DetailPostAct.class);
                     intent.putExtra("post", list_post.get(adapterPosition));
                     intent.putExtra("key", key);
                     activity.startActivity(intent);

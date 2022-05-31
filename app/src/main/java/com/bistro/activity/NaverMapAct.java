@@ -54,10 +54,12 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull final NaverMap naverMap) {
 
-        // 현재 위치 버튼 안보이게 설정
-//        UiSettings uiSettings = naverMap.getUiSettings();
-//        uiSettings.setLocationButtonEnabled(false);
         this.map = naverMap;
+
+        // 현재 위치 버튼 안보이게 설정
+        UiSettings uiSettings = map.getUiSettings();
+        uiSettings.setZoomControlEnabled(false);
+
         LatLng location = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
         Marker marker = new Marker();
         marker.setPosition(location);

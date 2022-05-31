@@ -46,7 +46,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
     private String               mStrOldBoardId; // 마지막에 불러온 item id
     private String userKey;
     private ProgressDialog mProgressDialog;     // 로딩 프로그레스
-    private TextView tv_like_order, tv_recent_order, mTvMsgEmpty;               // 게시글이 0개일 때 empty text
+    private TextView tv_like_order, tv_recent_order, tv_no_content;
 
     private StorageReference storageReference;
     private ArrayList<Uri> list_uri;
@@ -71,6 +71,7 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
         list_key = new ArrayList<>();
         list_post = new ArrayList<>();
 
+        tv_no_content = view.findViewById(R.id.tv_no_content);
         userKey = SharedManager.read(SharedManager.AUTH_TOKEN,"");
 
         recycler = view.findViewById(R.id.recycler);
@@ -137,22 +138,29 @@ public class FavoriteFragment extends Fragment implements View.OnClickListener {
                         String name_img = nickName + '1';
 
 
-                        storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
-
-                            //다운로드 URL이 파라미터로 전달되어 옴.
-                            list_uri.add(uri);
-
-                            if(list_post.size() == list_uri.size())
-                            {
+//                        storageReference.child(fileName).child(name_img).getDownloadUrl().addOnSuccessListener(uri -> {
+//
+//                            //다운로드 URL이 파라미터로 전달되어 옴.
+//                            list_uri.add(uri);
+//
+//                            if(list_post.size() == list_uri.size())
+//                            {
                                 bulletinAdapter = new BulletinAdapter(FavoriteFragment.this, list_post, list_uri, list_key, "favorite");
                                 recycler.setAdapter(bulletinAdapter);
                                 bulletinAdapter.notifyDataSetChanged();
 //                   setProgressDialog(null, false);
                                 finishLoadingProgress();
-                            }
-                        });
+//                            }
+//                        });
                     }
 
+                }
+
+                // 즐겨찾기한 목록이 없을때 !!!!
+                else
+                {
+                    tv_no_content.setVisibility(View.VISIBLE);
+                    finishLoadingProgress();
                 }
             }
 

@@ -55,32 +55,17 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private DatabaseReference
             mDatabaseRef;
     private Context context;
-
+    private String storeAddress , strName;
     private InputMethodManager imm;
-
     private RetrofitMain retrofitMain;
-
-    private TextView
-            tv_top,     // 게시글 모드 (작성하기 or 상세보기)
-            tv_complete;  // 작성완료 텍스트 버튼
-
-    private EditText
-            et_title,   // 게시글 제목
-            et_name_of_store,
-            et_menu,
-            et_address;
-
-    private EditText
-            et_content; // 게시글 내용
-
-    private LinearLayout
-            layoutAddress;
-
+    private TextView tv_complete, tv_search_store;  // 작성완료 텍스트 버튼
+    private EditText et_title, et_name_of_store, et_menu, et_address;
+    private TextView tv_name_of_store;
+    private EditText et_content; // 게시글 내용
+    private LinearLayout layoutAddress;
     private MapView mapView;
-
     private Uri[] pictureUri;
-    private ImageView iv_image1, iv_image2, iv_image3, iv_image4, iv_image5, iv_image6, iv_back_arrow
-                      , iv_pick_images, iv_search_poi;
+    private ImageView iv_pick_images, iv_search_poi;
     private RecyclerView rv_images;
     private PictureAdapter pictureAdapter;
     private ArrayList<Uri> listImages;
@@ -107,10 +92,10 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
         layoutAddress = findViewById(R.id.a_write_post_layout_address);
         mapView = findViewById(R.id.a_write_post_map);
 
-        tv_top = findViewById(R.id.tv_top);
         tv_complete = findViewById(R.id.btn_complete);
         et_title = findViewById(R.id.a_write_post_et_title);
-        et_name_of_store = findViewById(R.id.a_write_post_et_name);
+        tv_name_of_store = findViewById(R.id.a_write_post_tv_name);   // 맛집 검색뒤 맛집이름 들어오는 텍스트뷰
+        findViewById(R.id.tv_search_store).setOnClickListener(this);  // '맛집 검색' 버튼
         et_menu = findViewById(R.id.a_write_post_et_menu);
         et_content = findViewById(R.id.a_write_post_et_content);
         et_address = findViewById(R.id.a_write_post_et_address);
@@ -127,16 +112,16 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
         iv_pick_images = findViewById(R.id.a_write_post_iv_picture);
         iv_pick_images.setOnClickListener(this);
 
-        iv_search_poi = findViewById(R.id.a_write_post_iv_search_poi);
-        iv_search_poi.setOnClickListener(this);
+//        iv_search_poi = findViewById(R.id.a_write_post_iv_search_poi);
+//        iv_search_poi.setOnClickListener(this);
 
-        et_name_of_store.setOnKeyListener((view, keyCode, keyEvent) -> {
-            if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-                iv_search_poi.performClick();
-            }
-
-            return false;
-        });
+//        et_name_of_store.setOnKeyListener((view, keyCode, keyEvent) -> {
+//            if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+//                iv_search_poi.performClick();
+//            }
+//
+//            return false;
+//        });
 
         showKeyboard(et_title, true);
     }
@@ -195,7 +180,6 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 // 작성완료
 
                 String strTitle = et_title.getText().toString();
-                String strName = et_name_of_store.getText().toString();
                 String strContent = et_content.getText().toString();
                 String strMenu = et_menu.getText().toString();
                 // check validation of input field
@@ -229,6 +213,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 postModel.setDate(strCurrentDate);
                 postModel.setAuthToken(strAuthToken);
                 postModel.setFcmToken(strFcmToken);
+                postModel.setAddress(storeAddress);  // 식당 주소 ('맛집검색'으로 부터 받는 )
                 postModel.setId(strPostId);    // 게시글의 유니크한 ID
                 postModel.setUserId(userId);   // 사용자 로그인 ID
                 postModel.setMenu(strMenu);
@@ -316,48 +301,59 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 } // for문 끝나는 블락
                 break;
 
-            case R.id.a_write_post_iv_search_poi:
 
-                SearchAddressDialog searchDialog;
+                /** 맛집검색 버튼 **/
+            case R.id.tv_search_store:
 
-                if (et_name_of_store.getText().toString().isEmpty()) {
-                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager());
-                } else {
-                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager(), et_name_of_store.getText().toString());
-                }
+                SearchAddressDialog searchDialog = new SearchAddressDialog(this, getSupportFragmentManager());
 
-                searchDialog.setResultListener(place -> {
-                    Log.d(TAG, "onResult !!");
+//                if (et_name_of_store.getText().toString().isEmpty()) {
+//                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager());
+//                } else {
+//                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager(), et_name_of_store.getText().toString());
+//                }
 
+//                mPoiPlace = place;
+//                String strAddress = place.getAddress_name();
+//                String strRoadAddress = place.getRoad_address_name();
 
-                    mPoiPlace = place;
+                searchDialog.setResultListener(new SearchAddressDialog.ResultListener() {
+                    @Override
+                    public void onResult(KakaoPlaceModel.PoiPlace place, String name) {
+                        Log.d(TAG, "onResult !!");
 
-                    String strAddress = place.getAddress_name();
-                    String strRoadAddress = place.getRoad_address_name();
+                        strName = name;
+                        tv_name_of_store.setText(name);  // 식당이름 받는 부분
 
-                    layoutAddress.setVisibility(View.VISIBLE);
-                    if (strRoadAddress.equals("")) {
-                        et_address.setText(strAddress);
-                    } else {
-                        et_address.setText(strRoadAddress);
+                        String strAddress = place.getAddress_name();
+                        String strRoadAddress = place.getRoad_address_name();
+
+                        layoutAddress.setVisibility(View.VISIBLE);
+                        if (strRoadAddress.equals("")) {
+                            et_address.setText(strAddress);
+                            storeAddress = strAddress;
+                        } else {
+                            et_address.setText(strRoadAddress);
+                            storeAddress = strRoadAddress;
+                        }
+
+                        mapView.setVisibility(View.VISIBLE);
+                        mapView.getMapAsync(naverMap -> {
+                            naverMap.getUiSettings().setZoomControlEnabled(false);
+                            double x = Double.parseDouble(place.getX());
+                            double y = Double.parseDouble(place.getY());
+                            LatLng latLng = new LatLng(y, x);
+                            CameraUpdate cam = CameraUpdate.scrollAndZoomTo(latLng, 18.0);
+                            naverMap.moveCamera(cam);
+
+                            Marker marker = new Marker();
+                            marker.setPosition(latLng);
+                            marker.setMap(naverMap);
+                            marker.setIcon(OverlayImage.fromResource(R.drawable.img_pin_copy));
+                        });
+
+                        showKeyboard(et_menu, true);
                     }
-
-                    mapView.setVisibility(View.VISIBLE);
-                    mapView.getMapAsync(naverMap -> {
-                        naverMap.getUiSettings().setZoomControlEnabled(false);
-                        double x = Double.parseDouble(place.getX());
-                        double y = Double.parseDouble(place.getY());
-                        LatLng latLng = new LatLng(y, x);
-                        CameraUpdate cam = CameraUpdate.scrollAndZoomTo(latLng, 18.0);
-                        naverMap.moveCamera(cam);
-
-                        Marker marker = new Marker();
-                        marker.setPosition(latLng);
-                        marker.setMap(naverMap);
-                        marker.setIcon(OverlayImage.fromResource(R.drawable.img_pin_copy));
-                    });
-
-                    showKeyboard(et_menu, true);
                 });
                 searchDialog.show();
 
@@ -418,107 +414,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-//        if (requestCode == 1) {
-//            if (resultCode == RESULT_OK) {
-//                try {
-//                    //ClipData 또는 Uri를 가져온다
-//                    pictureUri[0] = data.getData();
-//                    Uri uri = data.getData();
-//                    ClipData clipData = data.getClipData();
-//                    iv_image1.setImageURI(uri);
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//            else if (resultCode == RESULT_CANCELED) {
-//              showToast("사진 선택 취소");
-//            }
-//        }
 
-//        else if (requestCode == 2) {
-//            if (resultCode == RESULT_OK) {
-//                try {
-//                    //ClipData 또는 Uri를 가져온다
-//                    pictureUri[1] = data.getData();
-//                    Uri uri = data.getData();
-//                    ClipData clipData = data.getClipData();
-//                    iv_image2.setImageURI(uri);
-//                } catch (Exception e) {
-//
-//                }
-//            }
-//            else if (resultCode == RESULT_CANCELED) {
-//                showToast("사진 선택 취소");
-//            }
-//        }
-//
-//        else if (requestCode == 3) {
-//            if (resultCode == RESULT_OK) {
-//                try {
-//                    //ClipData 또는 Uri를 가져온다
-//                    pictureUri[2] = data.getData();
-//                    Uri uri = data.getData();
-//                    ClipData clipData = data.getClipData();
-//                    iv_image3.setImageURI(uri);
-//
-//                } catch (Exception e) {
-//                }
-//            }
-//            else if (resultCode == RESULT_CANCELED) {
-//                showToast("사진 선택 취소");
-//            }
-//        }
-//
-//        else if (requestCode == 4) {
-//            if (resultCode == RESULT_OK) {
-//                try {
-//                    //ClipData 또는 Uri를 가져온다
-//                    pictureUri[3] = data.getData();
-//                    Uri uri = data.getData();
-//                    ClipData clipData = data.getClipData();
-//                    iv_image4.setImageURI(uri);
-//
-//                } catch (Exception e) {
-//                }
-//            }
-//            else if (resultCode == RESULT_CANCELED) {
-//                showToast("사진 선택 취소");
-//            }
-//        }
-//
-//        else if (requestCode == 5) {
-//            if (resultCode == RESULT_OK) {
-//                try {
-//                    //ClipData 또는 Uri를 가져온다
-//                    pictureUri[4] = data.getData();
-//                    Uri uri = data.getData();
-//                    ClipData clipData = data.getClipData();
-//                    iv_image5.setImageURI(uri);
-//
-//                } catch (Exception e) {
-//                }
-//            }
-//            else if (resultCode == RESULT_CANCELED) {
-//                showToast("사진 선택 취소");
-//            }
-//        }
-//
-//        else if (requestCode == 6) {
-//            if (resultCode == RESULT_OK) {
-//                try {
-//                    //ClipData 또는 Uri를 가져온다
-//                    pictureUri[5] = data.getData();
-//                    Uri uri = data.getData();
-//                    ClipData clipData = data.getClipData();
-//                    iv_image6.setImageURI(uri);
-//
-//                } catch (Exception e) {
-//                }
-//            }
-//            else if (resultCode == RESULT_CANCELED) {
-//                showToast("사진 선택 취소");
-//            }
-//        }
     }
 
     // 토스트 메소드

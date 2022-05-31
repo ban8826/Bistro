@@ -26,9 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="210dp"
                 android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.viewpager.widget.ViewPager
                     android:id="@+id/viewPager"
@@ -39,13 +39,13 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tab_layout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:tabGravity="center"
-                    app:tabIndicatorHeight="0dp"
-                    android:id="@+id/tab_layout2"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:tabBackground="@drawable/tab_selector"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:tabGravity="center"
+                    app:tabIndicatorHeight="0dp" />
 
                 <ImageView
                     android:id="@+id/iv_back_arrow"
@@ -60,13 +60,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--            <View-->
-<!--                android:id="@+id/view_line_middle"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_marginBottom="@dimen/twenty"-->
-<!--                android:background="@color/black"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/view_pager" />-->
+            <!--            <View-->
+            <!--                android:id="@+id/view_line_middle"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="1dp"-->
+            <!--                android:layout_marginBottom="@dimen/twenty"-->
+            <!--                android:background="@color/black"-->
+            <!--                app:layout_constraintTop_toBottomOf="@id/view_pager" />-->
 
             <TextView
                 android:id="@+id/tv_store_name"
@@ -81,13 +81,14 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/const_top" />
 
-           // '최고메뉴'
+            // '최고메뉴'
+
             <TextView
                 android:id="@+id/tv_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/twenty"
-                android:layout_marginTop="@dimen/fifteen"
+                android:layout_marginTop="@dimen/eight"
                 android:text="Best menu : "
                 android:textColor="@color/black"
                 android:textSize="@dimen/ten"
@@ -96,6 +97,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_store_name" />
 
             // 메뉴 값
+
             <TextView
                 android:id="@+id/tv_menu_value"
                 android:layout_width="wrap_content"
@@ -106,73 +108,92 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/eleven"
                 android:textStyle="bold"
-                app:layout_constraintLeft_toRightOf="@id/tv_menu"
-                app:layout_constraintBottom_toBottomOf="@id/tv_menu" />
+                app:layout_constraintBottom_toBottomOf="@id/tv_menu"
+                app:layout_constraintLeft_toRightOf="@id/tv_menu" />
 
-                    <ImageView
-                        android:id="@+id/iv_favorite"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_marginRight="@dimen/twenty"
-                        android:layout_marginTop="@dimen/fifteen"
-                        android:src="@drawable/ic_baseline_star_24"
-                        app:layout_constraintTop_toBottomOf="@id/const_top"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:tint="@color/gray_light"
-                        />
+<!--            // 좋아요 숫자-->
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/tv_like"-->
+<!--                android:text="5"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="@dimen/thirteen"-->
+<!--                android:textStyle="bold"-->
+<!--                android:layout_marginRight="@dimen/twenty"-->
+<!--                app:layout_constraintTop_toTopOf="@id/iv_like_small"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/iv_like_small"-->
+<!--                app:layout_constraintLeft_toRightOf="@id/iv_like_small"-->
+<!--                />-->
+
+<!--            // 좋아요 이미지-->
+<!--            <ImageView-->
+<!--                android:layout_width="@dimen/thirty"-->
+<!--                android:layout_height="@dimen/thirty"-->
+<!--                android:id="@+id/iv_like_small"-->
+<!--                android:src="@drawable/thumb_white"-->
+<!--                android:layout_marginRight="3dp"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tv_menu"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/tv_menu"               -->
+<!--                />-->
+
+
+            // 즐겨찾기 이미지
+            <ImageView
+                android:id="@+id/iv_favorite"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="@dimen/fifteen"
+                android:layout_marginRight="@dimen/twenty"
+                android:src="@drawable/ic_baseline_star_24"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/const_top"
+                app:tint="@color/gray_light" />
 
             // 닉네임
+
             <TextView
+                android:id="@+id/tv_nickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_nickName"
+                android:layout_marginRight="@dimen/twenty"
                 android:text="ban8826"
                 android:textColor="@color/black"
                 android:textSize="@dimen/thirteen"
-                android:layout_marginRight="@dimen/twenty"
-                app:layout_constraintTop_toBottomOf="@id/iv_favorite"
                 app:layout_constraintBottom_toTopOf="@id/map"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_favorite" />
 
             <ImageView
+                android:id="@+id/iv_profile"
                 android:layout_width="@dimen/thirty"
                 android:layout_height="@dimen/twenty"
-                android:id="@+id/iv_profile"
                 android:src="@drawable/ic_baseline_face_24"
+                app:layout_constraintBottom_toBottomOf="@id/tv_nickName"
                 app:layout_constraintRight_toLeftOf="@id/tv_nickName"
-                app:layout_constraintTop_toTopOf="@id/tv_nickName"
-                app:layout_constraintBottom_toBottomOf="@id/tv_nickName"/>
+                app:layout_constraintTop_toTopOf="@id/tv_nickName" />
 
             // 네이버 지도
 
-                <fragment
-                    android:id="@+id/map"
-                    android:name="com.naver.maps.map.MapFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_marginTop="@dimen/twentyFive"
-                    app:layout_constraintTop_toBottomOf="@id/tv_menu"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
+            <fragment
+                android:id="@+id/map"
+                android:name="com.naver.maps.map.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginTop="@dimen/twentyFive"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_menu" />
 
-
-
-<!--            <View-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="2dp"-->
-<!--                android:background="@color/gray_light2"-->
-<!--                android:layout_marginTop="@dimen/ten"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/tv_content"-->
-<!--                app:layout_constraintStart_toStartOf="parent" />-->
 
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginLeft="@dimen/ten"
                 android:layout_marginTop="@dimen/fifteen"
-                android:layout_marginRight="@dimen/ten"
+                android:lineHeight="@dimen/thirty"
                 android:minHeight="200dp"
+                android:padding="@dimen/ten"
                 android:text="간만에 삼겹살이 땡겨서 자주 가는 홍대로 출발 했습니다
 어느 삼겹살 집을 갈까 고민하다가 다른 음식도 땡길까 해서 홍대랑 가까운 연남동으로 넘어갔습니다
 날도 추운데 연남동 골목 괜히 이곳저곳을 기웃거렸나?
@@ -180,8 +201,6 @@
 그러다 발견한 연남동 삼겹살 돈조세!!"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sixteen"
-                android:padding="@dimen/ten"
-                android:lineHeight="@dimen/thirty"
                 app:layout_constraintTop_toBottomOf="@id/map" />
 
 
@@ -199,12 +218,12 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_content" />
 
             <View
+                android:id="@+id/view_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
-                android:id="@+id/view_bottom"
                 android:background="@color/gray_light2"
-                app:layout_constraintTop_toBottomOf="@id/tv_bottom"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_bottom" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_related"
@@ -212,9 +231,9 @@
                 android:layout_height="200dp"
                 android:background="@color/white"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/view_bottom"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"/>
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/view_bottom" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -222,6 +241,7 @@
 
 
     //하단 공감/ 비공감 콘스트레인뷰
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_bottom"
         android:layout_width="match_parent"
