@@ -24,6 +24,7 @@ public class PostModel implements Serializable {
     private String like;  // 공감수
 
     private HashMap<String, PostLikeModel> list_list;
+    private KakaoPlaceModel.PoiPlace poiPlace;
 
     // 싫어요는 일단 삭제하기로
 //    private String dislike;
@@ -150,4 +151,11 @@ public class PostModel implements Serializable {
         this.id = id;
     }
 
+    public KakaoPlaceModel.PoiPlace getPoiPlace() {
+        return poiPlace;
+    }
+
+    public void setPoiPlace(KakaoPlaceModel.PoiPlace poiPlace) {
+        this.poiPlace = poiPlace;
+    }
 }

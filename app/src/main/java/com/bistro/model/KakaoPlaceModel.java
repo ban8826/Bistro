@@ -2,6 +2,7 @@ package com.bistro.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 public class KakaoPlaceModel {
 
-    public class PoiResult {
+    public static class PoiResult {
         @SerializedName("meta")
         private PoiMeta                 poiMeta;
         @SerializedName("documents")
@@ -37,7 +38,7 @@ public class KakaoPlaceModel {
         //endregion
     }
 
-    public class PoiMeta {
+    public static class PoiMeta {
         private int             totalCount;             // 검색어에 검색된 문서 수
         private int             pageableCount;          // total_count 중 노출 가능 문서 수 (최대: 45)
         private boolean         isEnd;                  // 현재 페이지가 마지막 페이지인지 여부, 값이 false면 다음 요청 시 page 값을 증가시켜 다음 페이지 요청 가능
@@ -78,7 +79,7 @@ public class KakaoPlaceModel {
         //endregion
     }
 
-    public class PoiRegionInfo {
+    public static class PoiRegionInfo {
         private String[]        region;                 // 전체 지번 주소 또는 전체 도로명 주소, 입력에 따라 결정됨
         private String          keyword;                // address_name의 값의 타입(Type), 다음 중 하나 REGION(지명), ROAD(도로명), REGION_ADDR(지번 주소), ROAD_ADDR(도로명 주소)
         private String          selectedRegion;         // X 좌표값, 경위도인 경우 경도(longitude)
@@ -110,7 +111,7 @@ public class KakaoPlaceModel {
         //endregion
     }
 
-    public class PoiPlace {
+    public static class PoiPlace implements Serializable {
         private String          id;                     // 장소 ID
         private String          place_name;             // 장소명, 업체명
         private String          category_name;          // 장소명, 업체명
@@ -124,6 +125,8 @@ public class KakaoPlaceModel {
         private String          place_url;              // 장소 상세페이지 URL
         private String          distance;               // 중심좌표까지의 거리 (단, x,y 파라미터를 준 경우에만 존재) 단위 meter
         private boolean         isClick;
+
+        public PoiPlace() { }
 
         @Override
         public String toString() {

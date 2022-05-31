@@ -85,6 +85,8 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private PictureAdapter pictureAdapter;
     private ArrayList<Uri> listImages;
 
+    private KakaoPlaceModel.PoiPlace mPoiPlace;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -232,6 +234,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 postModel.setMenu(strMenu);
                 postModel.setClick("1");   // 조회수
                 postModel.setLike("0");    // 공감수
+                postModel.setPoiPlace(mPoiPlace);
 
                 mDatabaseRef.child("postInfo").child(strPostId).setValue(postModel);
 
@@ -325,6 +328,9 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                 searchDialog.setResultListener(place -> {
                     Log.d(TAG, "onResult !!");
+
+
+                    mPoiPlace = place;
 
                     String strAddress = place.getAddress_name();
                     String strRoadAddress = place.getRoad_address_name();
