@@ -224,6 +224,12 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                 mDatabaseRef.child("postInfo").child(strPostId).setValue(postModel);
 
+                /** 글쓰는 횟수 +1 하고 쉐어드에 저장하는 부분 **/
+                int count =  Integer.parseInt( SharedManager.read(SharedManager.WRITE_COUNT,"") );
+                // 글쓰기 카운트 1회 추가
+                count += 1;
+                SharedManager.write(SharedManager.WRITE_COUNT, String.valueOf(count));
+
                 final ProgressDialog progressDialog = new ProgressDialog(WritePostAct.this);
                 progressDialog.setTitle("업로드중...");
                 progressDialog.show();
@@ -263,11 +269,6 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                                         /**     이미지 업로드 완료    **/
                                         progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
 
-                                        /** 글쓰는 횟수 +1 하고 쉐어드에 저장하는 부분 **/
-                                        int count =  Integer.parseInt( SharedManager.read(SharedManager.WRITE_COUNT,"") );
-                                            // 글쓰기 카운트 1회 추가
-                                            count += count + 1;
-                                            SharedManager.write(SharedManager.WRITE_COUNT, String.valueOf(count));
 
                                         finish();
 
