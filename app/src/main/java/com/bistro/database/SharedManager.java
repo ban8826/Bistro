@@ -20,6 +20,8 @@ public class SharedManager
     public static final String USER_NAME             = "USER_NAME";             // 현재 로그인 한 닉네임
     public static final String FCM_TOKEN             = "FCM_TOKEN";             // 로그인이 될 때마다 새롭게 받아오는 FCM Token 데이터이다.
     public static final String PROFILE_STORAGE_PATH  = "PROFILE_STORAGE_PATH";  // 이미지 저장 경로 (Firebase Storage)
+    public static final String WRITE_COUNT           = "WRITE_COUNT";
+    public static final String TODAY                 = "TODAY";
 
     private SharedManager() { }
 

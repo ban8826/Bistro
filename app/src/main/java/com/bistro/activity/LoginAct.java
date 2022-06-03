@@ -24,6 +24,9 @@ import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
 import com.kakao.sdk.user.model.Profile;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * summary 로그인 화면
  */
@@ -92,6 +95,16 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener 
                         UserModel userModel = snapshot.getValue(UserModel.class);
                         if (userModel != null) {
                             // 로그인 타입 (Firebase Auth)
+
+                            /** 하루 5번만 글쓰기 제한인데 처음 앱 설치했을경우만 실행 **/
+                            SharedManager.init(getApplicationContext());
+                            if(SharedManager.read(SharedManager.TODAY,"").equals(""))
+                            {
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+                                String date = simpleDateFormat.format(new Date());
+                                SharedManager.write(SharedManager.TODAY, date);
+                                SharedManager.write(SharedManager.WRITE_COUNT,"0");
+                            }
 
 //                            SharedManager.write(SharedManager.LOGIN_TYPE, Const.LOGIN_TYPE_FIREBASE_EMAIL);
                             SharedManager.write(SharedManager.LOGIN_ID, userModel.getId());

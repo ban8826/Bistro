@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
 
+
     // 중간 스크롤뷰
 
     <ScrollView
@@ -138,17 +139,33 @@
 <!--                />-->
 
 
-            // 즐겨찾기 이미지
+            // 공감카운팅 이미지
             <ImageView
-                android:id="@+id/iv_favorite"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="@dimen/fifteen"
-                android:layout_marginRight="@dimen/twenty"
-                android:src="@drawable/ic_baseline_star_24"
+                android:id="@+id/iv_like_top"
+                android:layout_width="45dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="@dimen/ten"
+                android:layout_marginBottom="@dimen/ten"
+                android:src="@drawable/thumb_white"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/const_top"
-                app:tint="@color/gray_light" />
+                app:layout_constraintHorizontal_bias="0.87"
+                app:layout_constraintTop_toBottomOf="@id/const_top" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_like"
+                android:text="5"
+                android:textColor="@color/black"
+                android:textSize="@dimen/twenty"
+                android:textStyle="bold"
+                android:layout_marginRight="@dimen/twenty"
+                app:layout_constraintTop_toTopOf="@id/iv_like_top"
+                app:layout_constraintBottom_toBottomOf="@id/iv_like_top"
+                app:layout_constraintLeft_toRightOf="@id/iv_like_top"
+                />
 
             // 닉네임
 
@@ -162,7 +179,7 @@
                 android:textSize="@dimen/thirteen"
                 app:layout_constraintBottom_toTopOf="@id/map"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/iv_favorite" />
+                app:layout_constraintTop_toBottomOf="@id/iv_like_top" />
 
             <ImageView
                 android:id="@+id/iv_profile"
@@ -266,7 +283,7 @@
             android:layout_marginBottom="@dimen/seven"
             android:src="@drawable/thumb_down_white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.3"
+            app:layout_constraintHorizontal_bias="0.35"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -280,10 +297,22 @@
             android:layout_marginBottom="@dimen/ten"
             android:src="@drawable/thumb_white"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintHorizontal_bias="0.65"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        // 즐겨찾기 이미지
+        <ImageView
+            android:id="@+id/iv_favorite"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginRight="@dimen/twenty"
+            android:src="@drawable/ic_baseline_star_24"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/gray_light" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -107,9 +107,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/HEIGHT_EDIT_TEXT">
 
-                        <TextView
-                            android:id="@+id/a_write_post_tv_name"
-                            android:layout_width="230dp"
+                        <EditText
+                            android:id="@+id/a_write_post_et_name"
+                            android:layout_width="match_parent"
                             android:layout_height="@dimen/HEIGHT_EDIT_TEXT"
                             android:hint="맛집을 찾아주세요."
                             android:singleLine="true"
