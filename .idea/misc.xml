@@ -3,6 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Project/GitProject/Bistro/app/src/main/res/layout/act_main.xml" value="0.2866847826086957" />
+        <entry key="..\:/Project/GitProject/Bistro/app/src/main/res/layout/act_search.xml" value="0.33" />
+        <entry key="..\:/Project/GitProject/Bistro/app/src/main/res/layout/act_write_post_copy.xml" value="0.33" />
+        <entry key="..\:/Project/GitProject/Bistro/app/src/main/res/layout/dialog_search_address.xml" value="0.33" />
+        <entry key="..\:/Project/GitProject/Bistro/app/src/main/res/layout/frag_list.xml" value="0.2866847826086957" />
+        <entry key="..\:/Project/GitProject/Bistro/app/src/main/res/layout/item_search_address.xml" value="0.1717325227963526" />
+        <entry key="..\:/Project/GitProject/Bistro/app/src/main/res/layout/item_search_recent.xml" value="0.2866847826086957" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable-v24/border_white_inside.xml" value="0.123" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable-v24/form_input_white.xml" value="0.123" />
         <entry key="..\:/Users/ban88/AndroidStudioProjects/Bistro/app/src/main/res/drawable-v24/shape_cursor_white.xml" value="0.123" />

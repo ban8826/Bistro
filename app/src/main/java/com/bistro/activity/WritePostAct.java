@@ -313,7 +313,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 //                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager(), et_name_of_store.getText().toString());
 //                }
 
-//                mPoiPlace = place;
+//
 //                String strAddress = place.getAddress_name();
 //                String strRoadAddress = place.getRoad_address_name();
 
@@ -322,6 +322,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                     public void onResult(KakaoPlaceModel.PoiPlace place, String name) {
                         Log.d(TAG, "onResult !!");
 
+                        mPoiPlace = place;
                         strName = name;
                         tv_name_of_store.setText(name);  // 식당이름 받는 부분
 

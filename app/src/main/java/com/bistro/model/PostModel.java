@@ -23,7 +23,7 @@ public class PostModel implements Serializable {
     private String click; // 조회수
     private String like;  // 공감수
 
-    private HashMap<String, PostLikeModel> list_list;
+//    private HashMap<String, PostLikeModel> list_list;
     private KakaoPlaceModel.PoiPlace poiPlace;
 
     // 싫어요는 일단 삭제하기로
@@ -39,13 +39,13 @@ public class PostModel implements Serializable {
         return like;
     }
 
-    public void setList_list(HashMap<String, PostLikeModel> list_list) {
-        this.list_list = list_list;
-    }
-
-    public HashMap<String, PostLikeModel> getList_list() {
-        return list_list;
-    }
+//    public void setList_list(HashMap<String, PostLikeModel> list_list) {
+//        this.list_list = list_list;
+//    }
+//
+//    public HashMap<String, PostLikeModel> getList_list() {
+//        return list_list;
+//    }
 
     //    public void setDislike(String dislike) {
 //        this.dislike = dislike;

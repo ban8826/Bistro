@@ -17,12 +17,6 @@ public interface RetrofitAPI {
 //                                                 @Query("y") String lat);
 
     @GET("v2/local/search/keyword.json")
-    Call<KakaoPlaceModel.PoiResult> getSearchPoiFood(@Header("Authorization") String key,
-                                                     @Query("query") String query,
-                                                     @Query("category_group_code") String category);
-
-    @GET("v2/local/search/keyword.json")
-    Call<KakaoPlaceModel.PoiResult> getSearchPoiCafe(@Header("Authorization") String key,
-                                                     @Query("query") String query,
-                                                     @Query("category_group_code") String category);
+    Call<KakaoPlaceModel.PoiResult> getSearchPoi(@Header("Authorization") String key,
+                                                 @Query("query") String query);
 }

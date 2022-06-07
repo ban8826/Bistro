@@ -96,8 +96,7 @@ public class SearchAddressDialog extends Dialog {
                 Toast.makeText(getContext(), "상호명을 입력해주세요.", Toast.LENGTH_SHORT).show();
             } else {
                 resultList.clear();
-                retrofitMain.getSearchPoiFood(name);
-                retrofitMain.getSearchPoiCafe(name);
+                retrofitMain.getSearchPoi(name);
             }
         }
         );

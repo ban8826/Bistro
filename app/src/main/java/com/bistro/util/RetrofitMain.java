@@ -30,37 +30,10 @@ public class RetrofitMain {
 
     private final String TAG = "RetrofitMain";
 
-    public void getSearchPoiFood(String poi) {
+    public void getSearchPoi(String poi) {
         Log.d(TAG, "RetrofitMain getSearchPoi !!");
 
-        Call<KakaoPlaceModel.PoiResult> call = RetrofitClient.getApiService().getSearchPoiFood(mContext.getResources().getString(R.string.KAKAO_REST_API_KEY), poi, "FD6");
-        call.enqueue(new Callback<KakaoPlaceModel.PoiResult>() {
-            @Override
-            public void onResponse(Call<KakaoPlaceModel.PoiResult> call,
-                                   Response<KakaoPlaceModel.PoiResult> response) {
-                if (!response.isSuccessful()) {
-                    Log.e(TAG, "error code : " + response.code());
-                } else {
-                    KakaoPlaceModel.PoiResult result = response.body();
-
-                    if (resultListener != null) {
-                        resultListener.onResult(result);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<KakaoPlaceModel.PoiResult> call, Throwable t) {
-                Log.e(TAG, "error code : " + t.toString());
-            }
-
-        });
-    }
-
-    public void getSearchPoiCafe(String poi) {
-        Log.d(TAG, "RetrofitMain getSearchPoi !!");
-
-        Call<KakaoPlaceModel.PoiResult> call = RetrofitClient.getApiService().getSearchPoiFood(mContext.getResources().getString(R.string.KAKAO_REST_API_KEY), poi, "CE7");
+        Call<KakaoPlaceModel.PoiResult> call = RetrofitClient.getApiService().getSearchPoi(mContext.getResources().getString(R.string.KAKAO_REST_API_KEY), poi);
         call.enqueue(new Callback<KakaoPlaceModel.PoiResult>() {
             @Override
             public void onResponse(Call<KakaoPlaceModel.PoiResult> call,
