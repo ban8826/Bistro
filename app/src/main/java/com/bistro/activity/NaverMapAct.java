@@ -10,8 +10,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bistro.R;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
+import com.naver.maps.map.CameraUpdate;
 import com.naver.maps.map.LocationTrackingMode;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
@@ -52,7 +54,8 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
 
 
     @Override
-    public void onMapReady(@NonNull final NaverMap naverMap) {
+    public void onMapReady(@NonNull final NaverMap naverMap)
+    {
 
         this.map = naverMap;
 
@@ -64,8 +67,11 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
         Marker marker = new Marker();
         marker.setPosition(location);
         marker.setMap(map);
-        CameraPosition cameraPosition = new CameraPosition(location, 16);
-        map.setCameraPosition(cameraPosition);
+
+        CameraUpdate cameraUpdate = CameraUpdate.scrollTo(location);
+
+        map.moveCamera(cameraUpdate);
+
 
 //        naverMap.setLocationSource(fusedLocationSource);
 //        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);

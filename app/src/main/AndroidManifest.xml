@@ -21,11 +21,6 @@
         <activity
             android:name=".activity.MainAct"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".activity.WritePostAct"/>
         <activity android:name=".activity.DetailPostAct"/>
@@ -37,6 +32,11 @@
         <activity android:name=".activity.RemoveAccountAct"/>
         <activity android:name=".activity.SplashAct"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <activity

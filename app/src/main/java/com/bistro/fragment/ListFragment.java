@@ -355,12 +355,25 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.fab:
-                // 플로팅 버튼
-                Intent contentIntent = new Intent(getContext(), WritePostAct.class);
-                startActivity(contentIntent);
+
+               int count =  Integer.parseInt( SharedManager.read(SharedManager.WRITE_COUNT,"") );
+
+               // 정상실행
+               if(count < 5)
+               {
+                   // 작성화면 실행
+                   Intent contentIntent = new Intent(getContext(), WritePostAct.class);
+                   startActivity(contentIntent);
+               }
+               // 5번 초과, 미실행
+                else
+               {
+                   Toast.makeText(context, "글을 쓸수있는 횟수를 초과했습니다(1일 5회)", Toast.LENGTH_SHORT).show();
+               }
                 break;
 
-                // 공감순 버튼
+
+            // 공감순 버튼
             case R.id.tv_like:
 
                 databaseReference.child("postInfo").orderByChild("like").addValueEventListener(new ValueEventListener() {

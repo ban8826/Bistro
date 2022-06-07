@@ -8,6 +8,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -25,6 +26,8 @@ import com.bistro.fragment.MyInfoFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.StringTokenizer;
@@ -55,6 +58,20 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 
         // set default fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.container, bulletinFragment).commit();
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        String today = simpleDateFormat.format(new Date());  // 오늘 날짜
+        String date_from_shared = SharedManager.read(SharedManager.TODAY, ""); // 쉐어드에 저장된 날짜
+
+
+        // 글쓰기 카운트 0 으로
+        if(!date_from_shared.equals(today))
+        {
+            SharedManager.write(SharedManager.WRITE_COUNT,"0"); // 카운트 0으로 초기화
+            SharedManager.write(today,"");  // 오늘 (새로운 날짜) 저장
+        }
+
+        Toast.makeText(_Main_Activity, SharedManager.read(SharedManager.WRITE_COUNT,""), Toast.LENGTH_SHORT).show();
 
         BottomNavigationView bottom_menu = findViewById(R.id.bottom_menu);
         bottom_menu.setOnItemSelectedListener(item -> {

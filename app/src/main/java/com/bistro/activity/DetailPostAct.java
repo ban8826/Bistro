@@ -87,6 +87,8 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bistro-5bc79.appspot.com");
 
 
+        TextView tv_like = findViewById(R.id.tv_like);
+        tv_like.setText(postModel.getLike());
 
         tv_menu = findViewById(R.id.tv_menu_value);
         tv_content = findViewById(R.id.tv_content);
@@ -144,8 +146,8 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
             // 네이버지도 불러오는 부분
             FragmentManager fragmentManager = getSupportFragmentManager();
 //            String address = postModel.getAddress();
-            // 예시.
-            String address = "04058, 서울 마포구 서강로 131 (노고산동)";
+
+            String address = postModel.getAddress();   /** 파베에서 주소 가져오는 부분 **/
             if(naverMapFragment == null)
             {
                 naverMapFragment = new NaverMapFragment(address);
@@ -158,8 +160,6 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
             // 조회수 파베에 저장
             databaseReference.child("postInfo").child(key).child("click").setValue(String.valueOf(int_click));
         }, 500);
-
-
 
 
     }

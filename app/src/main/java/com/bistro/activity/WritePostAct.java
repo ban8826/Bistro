@@ -59,7 +59,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private InputMethodManager imm;
     private RetrofitMain retrofitMain;
     private TextView tv_complete, tv_search_store;  // 작성완료 텍스트 버튼
-    private EditText et_title, et_name_of_store, et_menu, et_address;
+    private EditText et_title, et_search_store, et_menu, et_address;
     private TextView tv_name_of_store;
     private EditText et_content; // 게시글 내용
     private LinearLayout layoutAddress;
@@ -94,7 +94,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
         tv_complete = findViewById(R.id.btn_complete);
         et_title = findViewById(R.id.a_write_post_et_title);
-        tv_name_of_store = findViewById(R.id.a_write_post_tv_name);   // 맛집 검색뒤 맛집이름 들어오는 텍스트뷰
+        et_search_store = findViewById(R.id.a_write_post_et_name);   // 맛집 검색뒤 맛집이름 들어오는 텍스트뷰
         findViewById(R.id.tv_search_store).setOnClickListener(this);  // '맛집 검색' 버튼
         et_menu = findViewById(R.id.a_write_post_et_menu);
         et_content = findViewById(R.id.a_write_post_et_content);
@@ -115,14 +115,15 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 //        iv_search_poi = findViewById(R.id.a_write_post_iv_search_poi);
 //        iv_search_poi.setOnClickListener(this);
 
-//        et_name_of_store.setOnKeyListener((view, keyCode, keyEvent) -> {
-//            if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
-//                iv_search_poi.performClick();
-//            }
-//
-//            return false;
-//        });
+        et_search_store.setOnKeyListener((view, keyCode, keyEvent) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER && keyEvent.getAction() == KeyEvent.ACTION_UP) {
+                iv_search_poi.performClick();
+            }
 
+            return false;
+        });
+
+        showKeyboard(et_search_store, true);
         showKeyboard(et_title, true);
     }
 
@@ -223,6 +224,12 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                 mDatabaseRef.child("postInfo").child(strPostId).setValue(postModel);
 
+                /** 글쓰는 횟수 +1 하고 쉐어드에 저장하는 부분 **/
+                int count =  Integer.parseInt( SharedManager.read(SharedManager.WRITE_COUNT,"") );
+                // 글쓰기 카운트 1회 추가
+                count += 1;
+                SharedManager.write(SharedManager.WRITE_COUNT, String.valueOf(count));
+
                 final ProgressDialog progressDialog = new ProgressDialog(WritePostAct.this);
                 progressDialog.setTitle("업로드중...");
                 progressDialog.show();
@@ -261,6 +268,8 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                                         /**     이미지 업로드 완료    **/
                                         progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
+
+
                                         finish();
 
 
@@ -305,13 +314,13 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 /** 맛집검색 버튼 **/
             case R.id.tv_search_store:
 
-                SearchAddressDialog searchDialog = new SearchAddressDialog(this, getSupportFragmentManager());
+                SearchAddressDialog searchDialog ;
 
-//                if (et_name_of_store.getText().toString().isEmpty()) {
-//                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager());
-//                } else {
-//                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager(), et_name_of_store.getText().toString());
-//                }
+                if (et_search_store.getText().toString().isEmpty()) {
+                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager());
+                } else {
+                    searchDialog = new SearchAddressDialog(this, getSupportFragmentManager(), et_search_store.getText().toString());
+                }
 
 //
 //                String strAddress = place.getAddress_name();
@@ -324,7 +333,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 
                         mPoiPlace = place;
                         strName = name;
-                        tv_name_of_store.setText(name);  // 식당이름 받는 부분
+                        et_search_store.setText(name);  // 식당이름 받는 부분
 
                         String strAddress = place.getAddress_name();
                         String strRoadAddress = place.getRoad_address_name();
@@ -416,18 +425,6 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-    }
-
-    // 토스트 메소드
-    private void showToast(String text)
-    {
-        View view1 = View.inflate(context, R.layout.toast_layout, null);
-        TextView textView = view1.findViewById(R.id.tv_toast);
-        textView.setText(text);
-        Toast toast = new Toast(context);
-        toast.setView(view1);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.show();
     }
 
 }
