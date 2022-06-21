@@ -2,9 +2,11 @@ package com.bistro.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PointF;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -38,6 +40,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.naver.maps.geometry.LatLng;
+import com.naver.maps.map.CameraUpdate;
+import com.naver.maps.map.MapView;
+import com.naver.maps.map.NaverMap;
+import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 
 import java.util.ArrayList;
 
@@ -68,7 +76,9 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
 
     private Fragment mapFragment;
     private ListFragment likeInterface;
-    private NaverMapFragment naverMapFragment;
+    //private NaverMapFragment naverMapFragment;
+
+    private MapView mapView;
 
 
     @Override
@@ -86,6 +96,7 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
         databaseReference = FirebaseDatabase.getInstance().getReference("bistro");
         storageReference = FirebaseStorage.getInstance().getReferenceFromUrl("gs://bistro-5bc79.appspot.com");
 
+        mapView = findViewById(R.id.a_detail_post_map);
 
         TextView tv_like = findViewById(R.id.tv_like);
         tv_like.setText(postModel.getLike());
@@ -148,12 +159,55 @@ public class DetailPostAct extends AppCompatActivity implements View.OnClickList
 //            String address = postModel.getAddress();
 
             String address = postModel.getAddress();   /** 파베에서 주소 가져오는 부분 **/
-            if(naverMapFragment == null)
-            {
-                naverMapFragment = new NaverMapFragment(address);
+//            if(naverMapFragment == null)
+//            {
+//                naverMapFragment = new NaverMapFragment(address);
+//
+//            }
+//            fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
 
-            }
-            fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
+            mapView.getMapAsync(naverMap -> {
+                naverMap.getUiSettings().setZoomControlEnabled(false);
+                double x = Double.parseDouble(postModel.getPoiPlace().getX());
+                double y = Double.parseDouble(postModel.getPoiPlace().getY());
+                LatLng latLng = new LatLng(y, x);
+                CameraUpdate cam = CameraUpdate.scrollAndZoomTo(latLng, 18.0);
+                naverMap.moveCamera(cam);
+                naverMap.setOnMapClickListener(new NaverMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(@NonNull PointF pointF, @NonNull LatLng latLng) {
+                        Intent intent = new Intent(DetailPostAct.this, NaverMapAct.class);
+                        intent.putExtra("lat", String.valueOf(postModel.getPoiPlace().getY()));
+                        intent.putExtra("long", String.valueOf(postModel.getPoiPlace().getX()));
+                        startActivity(intent);
+                    }
+                });
+
+                Marker marker = new Marker();
+                marker.setPosition(latLng);
+                marker.setMap(naverMap);
+                marker.setIcon(OverlayImage.fromResource(R.drawable.img_pin_copy));
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mapView.setVisibility(View.VISIBLE);
+                    }
+                }, 100);
+
+            });
+
+//            mapView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = new Intent(DetailPostAct.this, NaverMapAct.class);
+//                    intent.putExtra("lat", String.valueOf(postModel.getPoiPlace().getY()));
+//                    intent.putExtra("long", String.valueOf(postModel.getPoiPlace().getX()));
+//                    startActivity(intent);
+//                }
+//            });
+
+
             // 조회수 구현하는 부분
             String str_click = postModel.getClick();
             int int_click = Integer.parseInt(str_click) + 1;
