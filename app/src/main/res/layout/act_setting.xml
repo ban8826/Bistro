@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fillViewport="true"
-    tools:context=".ui.activity.SettingAct">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:layout_gravity="center"
                 android:textSize="30sp"
                 android:textColor="@color/black"
-                android:text="라이 센스"/>
+                android:text="개인정보보호"/>
         </FrameLayout>
 
         <!-- 이용 약관 -->

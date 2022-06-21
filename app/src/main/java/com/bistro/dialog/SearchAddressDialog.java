@@ -68,7 +68,6 @@ public class SearchAddressDialog extends Dialog {
         setContentView(R.layout.dialog_search_address);
 
         resultList = new ArrayList<>();
-
         etName = findViewById(R.id.d_search_address_et_name);
         ivSearch = findViewById(R.id.d_search_address_iv_search);
         rvList = findViewById(R.id.d_search_address_rv_result);
@@ -98,8 +97,7 @@ public class SearchAddressDialog extends Dialog {
                 resultList.clear();
                 retrofitMain.getSearchPoi(name);
             }
-        }
-        );
+        });
     }
 
     public void onResult(KakaoPlaceModel.PoiPlace place) {
@@ -113,6 +111,5 @@ public class SearchAddressDialog extends Dialog {
                 }
             }
         });
-
     }
 }

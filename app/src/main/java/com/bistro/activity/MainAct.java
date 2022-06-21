@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +17,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -23,10 +26,12 @@ import com.bistro.database.SharedManager;
 import com.bistro.fragment.FavoriteFragment;
 import com.bistro.fragment.ListFragment;
 import com.bistro.fragment.MyInfoFragment;
+import com.bistro.util.MidnightReceiver;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +51,12 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.act_main);
         _Main_Activity = MainAct.this;
         init();
+
+        // 자정에 이벤트 발생시키는 메소드이나 1일 5번 게시관련 하려했으나 날짜 변했을시로 대체 가능.
+//        resetAlarm(getApplicationContext());
 //       setInitialize();
+
+
     }
 
     private void init() {
@@ -59,9 +69,11 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
         // set default fragment
         getSupportFragmentManager().beginTransaction().replace(R.id.container, bulletinFragment).commit();
 
+
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
         String today = simpleDateFormat.format(new Date());  // 오늘 날짜
         String date_from_shared = SharedManager.read(SharedManager.TODAY, ""); // 쉐어드에 저장된 날짜
+        if(date_from_shared.equals(""))  SharedManager.write(SharedManager.TODAY, today); // 앱 처음다운받아서 날짜저장안됬을경우를 위해
 
 
         // 글쓰기 카운트 0 으로
@@ -71,7 +83,6 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
             SharedManager.write(today,"");  // 오늘 (새로운 날짜) 저장
         }
 
-        Toast.makeText(_Main_Activity, SharedManager.read(SharedManager.WRITE_COUNT,""), Toast.LENGTH_SHORT).show();
 
         BottomNavigationView bottom_menu = findViewById(R.id.bottom_menu);
         bottom_menu.setOnItemSelectedListener(item -> {
@@ -150,6 +161,29 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     }
 
 
+    public static void resetAlarm(Context context){
+        AlarmManager resetAlarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        Intent resetIntent = new Intent(context, MidnightReceiver.class);
+        PendingIntent resetSender = PendingIntent.getBroadcast(context, 0, resetIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        // 자정 시간
+        Calendar resetCal = Calendar.getInstance();
+        resetCal.setTimeInMillis(System.currentTimeMillis());
+        resetCal.set(Calendar.HOUR_OF_DAY, 0);
+        resetCal.set(Calendar.MINUTE,0);
+        resetCal.set(Calendar.SECOND, 0);
+
+        //다음날 0시에 맞추기 위해 24시간을 뜻하는 상수인 AlarmManager.INTERVAL_DAY를 더해줌.
+        resetAlarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, resetCal.getTimeInMillis()
+                +AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_DAY, resetSender);
+
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd kk:mm:ss");
+        String setResetTime = format.format(new Date(resetCal.getTimeInMillis()+AlarmManager.INTERVAL_DAY));
+
+        Log.d("resetAlarm", "ResetHour : " + setResetTime);
+    }
+
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -174,7 +208,5 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-
-
     }
 }

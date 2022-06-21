@@ -159,7 +159,7 @@
                 android:id="@+id/tv_like"
                 android:text="5"
                 android:textColor="@color/black"
-                android:textSize="@dimen/twenty"
+                android:textSize="@dimen/fifteen"
                 android:textStyle="bold"
                 android:layout_marginRight="@dimen/twenty"
                 app:layout_constraintTop_toTopOf="@id/iv_like_top"
