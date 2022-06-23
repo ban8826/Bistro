@@ -59,13 +59,11 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
         _view.findViewById(R.id.btn_setting).setOnClickListener(this);
         tv_nickName = _view.findViewById(R.id.tv_nickName_value);
         tv_rank = _view.findViewById(R.id.tv_rank);
-        tv_privacy = _view.findViewById(R.id.tv_privacy);
         tv_nickName.setText(SharedManager.read(SharedManager.USER_NAME,""));
         tv_like = _view.findViewById(R.id.tv_like_value);
 
         tv_nickName.setOnClickListener(this);
         tv_rank.setOnClickListener(this);
-        tv_privacy.setOnClickListener(this);
 
         databaseReference.child("userInfo").child(authToken).child("like").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -100,9 +98,6 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
 
                 break;
 
-            case R.id.tv_privacy:
-
-                break;
 
             case R.id.tv_logout:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

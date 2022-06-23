@@ -142,16 +142,14 @@
             // 공감카운팅 이미지
             <ImageView
                 android:id="@+id/iv_like_top"
-                android:layout_width="45dp"
-                android:layout_height="40dp"
+                android:layout_width="35dp"
+                android:layout_height="30dp"
                 android:layout_marginTop="@dimen/ten"
-                android:layout_marginBottom="@dimen/ten"
                 android:src="@drawable/thumb_white"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintHorizontal_bias="0.87"
-                app:layout_constraintTop_toBottomOf="@id/const_top" />
-
+                app:layout_constraintBottom_toBottomOf="@id/tv_store_name" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -159,7 +157,7 @@
                 android:id="@+id/tv_like"
                 android:text="5"
                 android:textColor="@color/black"
-                android:textSize="@dimen/twenty"
+                android:textSize="@dimen/fifteen"
                 android:textStyle="bold"
                 android:layout_marginRight="@dimen/twenty"
                 app:layout_constraintTop_toTopOf="@id/iv_like_top"
@@ -168,27 +166,26 @@
                 />
 
             // 닉네임
-
             <TextView
                 android:id="@+id/tv_nickName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/twenty"
                 android:text="ban8826"
                 android:textColor="@color/black"
                 android:textSize="@dimen/thirteen"
-                app:layout_constraintBottom_toTopOf="@id/a_detail_post_map"
-                app:layout_constraintRight_toRightOf="parent"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/seven"
+                app:layout_constraintLeft_toLeftOf="@id/iv_like_top"
                 app:layout_constraintTop_toBottomOf="@id/iv_like_top" />
 
-            <ImageView
-                android:id="@+id/iv_profile"
-                android:layout_width="@dimen/thirty"
-                android:layout_height="@dimen/twenty"
-                android:src="@drawable/ic_baseline_face_24"
-                app:layout_constraintBottom_toBottomOf="@id/tv_nickName"
-                app:layout_constraintRight_toLeftOf="@id/tv_nickName"
-                app:layout_constraintTop_toTopOf="@id/tv_nickName" />
+<!--            <ImageView-->
+<!--                android:id="@+id/iv_profile"-->
+<!--                android:layout_width="@dimen/thirty"-->
+<!--                android:layout_height="@dimen/twenty"-->
+<!--                android:src="@drawable/ic_baseline_face_24"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/tv_nickName"-->
+<!--                app:layout_constraintRight_toLeftOf="@id/tv_nickName"-->
+<!--                app:layout_constraintTop_toTopOf="@id/tv_nickName" />-->
 
 
             <com.naver.maps.map.MapView

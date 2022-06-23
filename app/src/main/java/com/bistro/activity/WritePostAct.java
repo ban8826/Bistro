@@ -360,6 +360,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                             marker.setPosition(latLng);
                             marker.setMap(naverMap);
                             marker.setIcon(OverlayImage.fromResource(R.drawable.img_pin_copy));
+
                         });
 
                         showKeyboard(et_menu, true);
@@ -371,7 +372,6 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                 int height = (int)(getResources().getDisplayMetrics().heightPixels*0.90);
 
                 searchDialog.getWindow().setLayout(width, height);
-
                 break;
 
         }

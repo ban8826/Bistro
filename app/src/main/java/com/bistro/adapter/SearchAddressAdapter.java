@@ -33,11 +33,11 @@ public class SearchAddressAdapter extends RecyclerView.Adapter<SearchAddressAdap
 
     private static View view;
 
-    private FragmentManager fm;
+    private final FragmentManager fm;
 
     private ArrayList<KakaoPlaceModel.PoiPlace> addressList;
 
-    private SearchAddressDialog dialog;
+    private final SearchAddressDialog dialog;
 
     public SearchAddressAdapter(SearchAddressDialog dialog, FragmentManager fm, ArrayList<KakaoPlaceModel.PoiPlace> addressList) {
         this.dialog = dialog;
@@ -89,11 +89,11 @@ public class SearchAddressAdapter extends RecyclerView.Adapter<SearchAddressAdap
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView tvName;
-        private LinearLayout layoutMap;
-        private Button btnSelect;
+        private final TextView tvName;
+        private final LinearLayout layoutMap;
+        private final Button btnSelect;
 
-        private MapView mapView;
+        private final MapView mapView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,9 +107,7 @@ public class SearchAddressAdapter extends RecyclerView.Adapter<SearchAddressAdap
                 for (int i = 0; i < addressList.size(); i++) {
                     addressList.get(i).setClick(false);
                 }
-
                 addressList.get(getAdapterPosition()).setClick(true);
-
                 notifyDataSetChanged();
             });
 
@@ -131,8 +129,6 @@ public class SearchAddressAdapter extends RecyclerView.Adapter<SearchAddressAdap
             } else {
                 tvName.setText(roadAddress);
             }
-
-
         }
     }
 }

@@ -3,13 +3,17 @@ package com.bistro.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.bistro.R;
+import com.bistro.fragment.NaverMapFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.naver.maps.geometry.LatLng;
 import com.naver.maps.map.CameraPosition;
@@ -29,10 +33,13 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
         private FusedLocationSource fusedLocationSource;
         private final int REQUEST_CODE = 1000;
         private Intent intent;
-        private String latitude;
+        private String latitude, storeName;
 
     private NaverMap map;
     private String longitude;
+    private TextView tv_top;
+
+    private NaverMapFragment naverMapFragment;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +49,26 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
 
         latitude = intent.getStringExtra("lat");
         longitude = intent.getStringExtra("long");
+         storeName = intent.getStringExtra("storeName");
 
-        mapView = findViewById(R.id.map_view);
-        mapView.onCreate(savedInstanceState);
+         tv_top = findViewById(R.id.tv_top);
+        naverMapFragment = new NaverMapFragment(Double.parseDouble(latitude), Double.parseDouble( longitude));
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.map, naverMapFragment).commit();
 
-        mapView.getMapAsync( this);
+        tv_top.setText(storeName);
+
+        findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
+                                                           @Override
+                                                           public void onClick(View view) {
+                                                               finish();
+                                                           }
+                                                       });
+
+//        mapView = findViewById(R.id.map_view);
+//        mapView.onCreate(savedInstanceState);
+//
+//        mapView.getMapAsync( this);
 
 //        fusedLocationSource = new FusedLocationSource(this, REQUEST_CODE);
     }
@@ -61,7 +83,7 @@ public class NaverMapAct extends AppCompatActivity implements OnMapReadyCallback
 
         // 현재 위치 버튼 안보이게 설정
         UiSettings uiSettings = map.getUiSettings();
-        uiSettings.setZoomControlEnabled(false);
+        uiSettings.setZoomControlEnabled(true);
 
         LatLng location = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
         Marker marker = new Marker();
