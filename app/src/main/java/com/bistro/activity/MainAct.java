@@ -6,39 +6,63 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bistro.Define;
 import com.bistro.R;
 import com.bistro.database.SharedManager;
 import com.bistro.fragment.FavoriteFragment;
 import com.bistro.fragment.ListFragment;
 import com.bistro.fragment.MyInfoFragment;
+import com.bistro.model.KakaoPlaceModel;
+import com.bistro.util.RetrofitMain;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.StringTokenizer;
 
 public class MainAct extends AppCompatActivity implements View.OnClickListener {
+    private final String TAG = "MainAct";
 
+    private FusedLocationProviderClient mFusedLocationClient;
+    private LocationCallback mLocationCallback;
+    private LocationRequest mLocationRequest;
+
+    private RetrofitMain retrofitMain;
 
     // test comment
 //    private AppDatabase mLocalDatabase;
     public static Activity _Main_Activity;
     public ListFragment bulletinFragment;
+
+    //region 메인액티비티 Callback 관련
+    public interface MainCallback {
+        void getCurrentRegion(String region);
+    }
+
+    private MainCallback mainCallback;
+
+    public void setMainCallback(MainCallback mainCallback) {
+        this.mainCallback = mainCallback;
+    }
+
+    public void getCurrentRegion(String region) {
+        if (mainCallback != null) {
+            mainCallback.getCurrentRegion(region);
+        }
+    }
+    //endregion
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +74,19 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void init() {
+        initLocation();
+        retrofitMain = new RetrofitMain(this);
+        retrofitMain.setResultListener(new RetrofitMain.ResultListener() {
+            @Override
+            public void onPoiResult(KakaoPlaceModel.PoiResult model) {
+
+            }
+
+            @Override
+            public void onRegionResult(String region) {
+                getCurrentRegion(region);
+            }
+        });
 
         SharedManager.init(getApplicationContext());
         bulletinFragment = new ListFragment();
@@ -65,13 +102,12 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 
 
         // 글쓰기 카운트 0 으로
-        if(!date_from_shared.equals(today))
-        {
-            SharedManager.write(SharedManager.WRITE_COUNT,"0"); // 카운트 0으로 초기화
-            SharedManager.write(today,"");  // 오늘 (새로운 날짜) 저장
+        if (!date_from_shared.equals(today)) {
+            SharedManager.write(SharedManager.WRITE_COUNT, "0"); // 카운트 0으로 초기화
+            SharedManager.write(today, "");  // 오늘 (새로운 날짜) 저장
         }
 
-        Toast.makeText(_Main_Activity, SharedManager.read(SharedManager.WRITE_COUNT,""), Toast.LENGTH_SHORT).show();
+        Toast.makeText(_Main_Activity, SharedManager.read(SharedManager.WRITE_COUNT, ""), Toast.LENGTH_SHORT).show();
 
         BottomNavigationView bottom_menu = findViewById(R.id.bottom_menu);
         bottom_menu.setOnItemSelectedListener(item -> {
@@ -98,6 +134,30 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 
     }
 
+    private void initLocation() {
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    Define.curLon = location.getLongitude();
+                    Define.curLat = location.getLatitude();
+
+                    Log.d(TAG, "lon : " + location.getLongitude() + ", lat : " + location.getLatitude());
+
+                    retrofitMain.getCurrentRegion(location.getLongitude(), location.getLatitude());
+                }
+            }
+        };
+        mLocationRequest = LocationRequest.create();
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(1000); // 1분에 한번씩 갱신
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    }
 
 //    private void setInitialize() {
 //        mLocalDatabase = AppDatabase.getInstance(getApplicationContext());
@@ -105,6 +165,23 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 //        findViewById(R.id.btn_insert_db).setOnClickListener(this);
 //        findViewById(R.id.btn_select_db).setOnClickListener(this);
 //    }
+
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "위치 권한설정 안됨!");
+            return;
+        } else {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest,
+                    mLocationCallback,
+                    Looper.getMainLooper());
+        }
+
+    }
+
+    private void stopLocationUpdates() {
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+    }
 
     @Override
     public void onClick(View view) {
@@ -153,6 +230,9 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause !");
+
+        stopLocationUpdates();
     }
 
     @Override
@@ -174,7 +254,8 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume !");
 
-
+        startLocationUpdates();
     }
 }

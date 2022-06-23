@@ -74,13 +74,22 @@ public class SearchAddressDialog extends Dialog {
         rvList = findViewById(R.id.d_search_address_rv_result);
 
         retrofitMain = new RetrofitMain(getContext());
-        retrofitMain.setResultListener(model -> {
-            resultList = model.getPoiPlace();
-            adapter = new SearchAddressAdapter(SearchAddressDialog.this, fm, resultList);
-            rvList.setAdapter(adapter);
 
-            for (KakaoPlaceModel.PoiPlace place : resultList) {
-                Log.d(TAG, place.toString() + "\n");
+        retrofitMain.setResultListener(new RetrofitMain.ResultListener() {
+            @Override
+            public void onPoiResult(KakaoPlaceModel.PoiResult model) {
+                resultList = model.getPoiPlaceList();
+                adapter = new SearchAddressAdapter(SearchAddressDialog.this, fm, resultList);
+                rvList.setAdapter(adapter);
+
+                for (KakaoPlaceModel.PoiPlace place : resultList) {
+                    Log.d(TAG, place.toString() + "\n");
+                }
+            }
+
+            @Override
+            public void onRegionResult(String region) {
+
             }
         });
 

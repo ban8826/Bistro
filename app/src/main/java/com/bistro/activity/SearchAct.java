@@ -46,14 +46,14 @@ public class SearchAct extends AppCompatActivity implements View.OnClickListener
         retrofitMain = new RetrofitMain(this);
         retrofitMain.setResultListener(new RetrofitMain.ResultListener() {
             @Override
-            public void onResult(KakaoPlaceModel.PoiResult result) {
+            public void onPoiResult(KakaoPlaceModel.PoiResult model) {
                 //TODO : 카카오 api로 검색 -> firebase 검색 -> 겹치는 것 리스트에 표출
                 dbRef.orderByChild("storeName").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         ArrayList<PostModel> modelList = new ArrayList<>(); // MainAct로 전달할 리스트
 
-                        for (KakaoPlaceModel.PoiPlace place : result.getPoiPlace()) {
+                        for (KakaoPlaceModel.PoiPlace place : model.getPoiPlaceList()) {
 
                             for (DataSnapshot singleSnapshot : snapshot.getChildren()) {
                                 if (singleSnapshot != null) {
@@ -77,6 +77,11 @@ public class SearchAct extends AppCompatActivity implements View.OnClickListener
 
                     }
                 });
+            }
+
+            @Override
+            public void onRegionResult(String region) {
+
             }
         });
 
