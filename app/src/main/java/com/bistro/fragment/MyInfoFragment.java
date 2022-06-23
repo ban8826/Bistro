@@ -56,7 +56,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
         databaseReference = FirebaseDatabase.getInstance().getReference("bistro");
         String authToken = SharedManager.read(SharedManager.AUTH_TOKEN, "");
 
-        _view.findViewById(R.id.btn_setting).setOnClickListener(this);
+        _view.findViewById(R.id.const_setting).setOnClickListener(this);
         tv_nickName = _view.findViewById(R.id.tv_nickName_value);
         tv_rank = _view.findViewById(R.id.tv_rank);
         tv_nickName.setText(SharedManager.read(SharedManager.USER_NAME,""));
@@ -83,7 +83,7 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.btn_setting:
+            case R.id.const_setting:
                 // 설정 화면
                 Intent settingIntent = new Intent(getContext(), SettingAct.class);
                 getLogoutResult.launch(settingIntent);
