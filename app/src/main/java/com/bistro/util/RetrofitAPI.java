@@ -19,4 +19,9 @@ public interface RetrofitAPI {
     @GET("v2/local/search/keyword.json")
     Call<KakaoPlaceModel.PoiResult> getSearchPoi(@Header("Authorization") String key,
                                                  @Query("query") String query);
+
+    @GET("v2/local/geo/coord2regioncode.json")
+    Call<KakaoPlaceModel.RegionResult> getCurrentRegion(@Header("Authorization") String key,
+                                                        @Query("x") String x,
+                                                        @Query("y") String y);
 }

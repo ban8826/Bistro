@@ -16,7 +16,7 @@ public class KakaoPlaceModel {
         @SerializedName("meta")
         private PoiMeta                 poiMeta;
         @SerializedName("documents")
-        private ArrayList<PoiPlace>     poiPlace;
+        private ArrayList<PoiPlace> poiPlaceList;
 
         //region getter & setter
         public PoiMeta getPoiMeta() {
@@ -27,12 +27,12 @@ public class KakaoPlaceModel {
             this.poiMeta = poiMeta;
         }
 
-        public ArrayList<PoiPlace> getPoiPlace() {
-            return poiPlace;
+        public ArrayList<PoiPlace> getPoiPlaceList() {
+            return poiPlaceList;
         }
 
-        public void setPoiPlace(ArrayList<PoiPlace> poiPlace) {
-            this.poiPlace = poiPlace;
+        public void setPoiPlaceList(ArrayList<PoiPlace> poiPlaceList) {
+            this.poiPlaceList = poiPlaceList;
         }
 
         //endregion
@@ -254,4 +254,147 @@ public class KakaoPlaceModel {
 
         //endregion
     }
+
+    public static class RegionResult {
+        @SerializedName("meta")
+        private RegionMeta                  regionMeta;
+        @SerializedName("documents")
+        private ArrayList<RegionInfo>       regionList;
+
+        //region getter & setter
+        public RegionMeta getRegionMeta() {
+            return regionMeta;
+        }
+
+        public void setRegionMeta(RegionMeta regionMeta) {
+            this.regionMeta = regionMeta;
+        }
+
+        public ArrayList<RegionInfo> getRegionList() {
+            return regionList;
+        }
+
+        public void setRegionList(ArrayList<RegionInfo> regionList) {
+            this.regionList = regionList;
+        }
+        //endregion
+    }
+
+    public static class RegionMeta {
+        private int totalCount;
+
+        //region getter & setter
+        public int getTotalCount() {
+            return totalCount;
+        }
+
+        public void setTotalCount(int totalCount) {
+            this.totalCount = totalCount;
+        }
+        //endregion
+    }
+
+    public static class RegionInfo {
+        @SerializedName("region_type")
+        private String regionType;          // H(행정동) 또는 B(법정동)
+
+        @SerializedName("address_name")
+        private String addressName;         // 전체 지역 명칭
+
+        @SerializedName("region_1depth_name")
+        private String region1DepthName;    // 지역 1Depth, 시도 단위
+
+        @SerializedName("region_2depth_name")
+        private String region2DepthName;    // 지역 2Depth, 구 단위
+
+        @SerializedName("region_3depth_name")
+        private String region3DepthName;    // 지역 3Depth, 동 단위
+
+        @SerializedName("region_4depth_name")
+        private String region4DepthName;    // 지역 4Depth, region_type이 법정동이며, 리 영역인 경우만 존재
+
+        @SerializedName("code")
+        private String code;                // region 코드
+
+        @SerializedName("x")
+        private double x;                   // X 좌표값, 경위도인 경우 경도(longitude)
+
+        @SerializedName("y")
+        private double y;                   // Y 좌표값, 경위도인 경우 위도(latitude)
+
+        //region getter & setter
+        public String getRegionType() {
+            return regionType;
+        }
+
+        public void setRegionType(String regionType) {
+            this.regionType = regionType;
+        }
+
+        public String getAddressName() {
+            return addressName;
+        }
+
+        public void setAddressName(String addressName) {
+            this.addressName = addressName;
+        }
+
+        public String getRegion1DepthName() {
+            return region1DepthName;
+        }
+
+        public void setRegion1DepthName(String region1DepthName) {
+            this.region1DepthName = region1DepthName;
+        }
+
+        public String getRegion2DepthName() {
+            return region2DepthName;
+        }
+
+        public void setRegion2DepthName(String region2DepthName) {
+            this.region2DepthName = region2DepthName;
+        }
+
+        public String getRegion3DepthName() {
+            return region3DepthName;
+        }
+
+        public void setRegion3DepthName(String region3DepthName) {
+            this.region3DepthName = region3DepthName;
+        }
+
+        public String getRegion4DepthName() {
+            return region4DepthName;
+        }
+
+        public void setRegion4DepthName(String region4DepthName) {
+            this.region4DepthName = region4DepthName;
+        }
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
+
+        public double getX() {
+            return x;
+        }
+
+        public void setX(double x) {
+            this.x = x;
+        }
+
+        public double getY() {
+            return y;
+        }
+
+        public void setY(double y) {
+            this.y = y;
+        }
+        //endregion
+    }
+
 }

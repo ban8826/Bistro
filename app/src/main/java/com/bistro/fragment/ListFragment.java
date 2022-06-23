@@ -11,8 +11,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,13 +27,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.bistro.Define;
 import com.bistro.R;
+import com.bistro.activity.MainAct;
 import com.bistro.activity.SearchAct;
 import com.bistro.activity.WritePostAct;
 import com.bistro.adapter.BulletinAdapter;
 import com.bistro.database.SharedManager;
 import com.bistro.model.PostModel;
-import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -49,7 +47,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.FileVisitResult;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -58,7 +55,9 @@ import java.util.Locale;
  * author ban8826
  * summary 메인 화면 프래그먼트
  */
-public class ListFragment extends Fragment implements  View.OnClickListener, Serializable {
+public class ListFragment extends Fragment implements  View.OnClickListener, Serializable, MainAct.MainCallback {
+
+    private MainAct mainAct;
 
     private RecyclerView recycler;
     public BulletinAdapter bulletinAdapter;
@@ -85,11 +84,16 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
     private ImageView iv_search;
     private Context context;
 
+    private TextView tvRegion;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         context = container.getContext();
+        mainAct = (MainAct) context;
+        mainAct.setMainCallback(this);
+
         return inflater.inflate(R.layout.frag_list, container, false);
 
         // onCreateView 에서 findviewbyid()를 사용하면 충돌이 일어날수 있기에 사용하면 안된다
@@ -118,6 +122,7 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
         tv_no_content = view.findViewById(R.id.tv_no_content);
 
         tv_area = view.findViewById(R.id.tv_title);
+        tvRegion = view.findViewById(R.id.f_list_tv_local);
 
         iv_search = view.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
@@ -454,6 +459,10 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
         loadingProgress.setVisibility(View.INVISIBLE);
     }
 
+    @Override
+    public void getCurrentRegion(String region) {
+        tvRegion.setText(region);
+    }
 
     public class LikeInterface implements Serializable
     {
