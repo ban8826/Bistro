@@ -74,15 +74,6 @@
         app:layout_constraintTop_toBottomOf="@id/const_top"
         app:layout_constraintLeft_toLeftOf="parent">
 
-        <TextView
-            android:id="@+id/f_list_tv_local"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textSize="16dp"
-            android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="10dp"/>
 
        <TextView
            android:layout_width="65dp"

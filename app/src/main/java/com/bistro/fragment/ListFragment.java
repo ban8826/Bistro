@@ -61,7 +61,7 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
 
     private RecyclerView recycler;
     public BulletinAdapter bulletinAdapter;
-    private DatabaseReference databaseReference;
+        private DatabaseReference databaseReference;
 
     private ArrayList<PostModel> list_post, list_selected;       // real list
     private ArrayList<PostModel> mLstPostGet;    // 리스트를 20개씩만 담을 임시 array
@@ -84,8 +84,6 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
     private ImageView iv_search;
     private Context context;
 
-    private TextView tvRegion;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,7 +104,7 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
         this.view = view;
         current_location = "";
         startLoadingProgress();
-        setInitialize(view);
+            setInitialize(view);
 
     }
 
@@ -122,7 +120,7 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
         tv_no_content = view.findViewById(R.id.tv_no_content);
 
         tv_area = view.findViewById(R.id.tv_title);
-        tvRegion = view.findViewById(R.id.f_list_tv_local);
+
 
         iv_search = view.findViewById(R.id.iv_search);
         iv_search.setOnClickListener(this);
@@ -461,7 +459,7 @@ public class ListFragment extends Fragment implements  View.OnClickListener, Ser
 
     @Override
     public void getCurrentRegion(String region) {
-        tvRegion.setText(region);
+        tv_area.setText(region);
     }
 
     public class LikeInterface implements Serializable

@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import com.bistro.R;
 import com.bistro.activity.AccountAct;
@@ -36,9 +37,9 @@ import com.kakao.usermgmt.response.model.UserAccount;
 
 public class MyInfoFragment extends Fragment implements View.OnClickListener {
 
-    private TextView tv_nickName, tv_rank, tv_like, tv_privacy, tv_logout;
+    private TextView tv_nickName, tv_verify, tv_like, tv_privacy, tv_logout;
     private DatabaseReference databaseReference;
-
+    private ConstraintLayout const_nickName;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -58,12 +59,13 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
 
         _view.findViewById(R.id.const_setting).setOnClickListener(this);
         tv_nickName = _view.findViewById(R.id.tv_nickName_value);
-        tv_rank = _view.findViewById(R.id.tv_rank);
+        tv_verify = _view.findViewById(R.id.tv_verify);
         tv_nickName.setText(SharedManager.read(SharedManager.USER_NAME,""));
         tv_like = _view.findViewById(R.id.tv_like_value);
+        const_nickName = _view.findViewById(R.id.const_profile);
+        const_nickName.setOnClickListener(this);
 
-        tv_nickName.setOnClickListener(this);
-        tv_rank.setOnClickListener(this);
+        tv_verify.setOnClickListener(this);
 
         databaseReference.child("userInfo").child(authToken).child("like").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -89,12 +91,12 @@ public class MyInfoFragment extends Fragment implements View.OnClickListener {
                 getLogoutResult.launch(settingIntent);
                 break;
 
-            case R.id.tv_nickName_value:
+            case R.id.const_profile:
                 Intent settingIntent1 = new Intent(getContext(), AccountAct.class);
                 getLogoutResult.launch(settingIntent1);
                 break;
 
-            case R.id.tv_rank:
+            case R.id.tv_verify:
 
                 break;
 

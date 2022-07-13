@@ -69,8 +69,14 @@ public class FavoriteAct extends AppCompatActivity implements View.OnClickListen
 
         tv_menu = findViewById(R.id.tv_menu_value);
         tv_content = findViewById(R.id.tv_content);
-        tv_title = findViewById(R.id.tv_title);
         tv_store_name = findViewById(R.id.tv_store_name);
+
+        findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         title = postModel.getTitle();
         store_name = postModel.getStoreName();
@@ -81,7 +87,6 @@ public class FavoriteAct extends AppCompatActivity implements View.OnClickListen
         list_post = new ArrayList<>();
 
 
-        tv_title.setText(title);
         tv_store_name.setText(store_name);
         tv_menu.setText(menu);
         tv_content.setText(content);
@@ -144,7 +149,7 @@ public class FavoriteAct extends AppCompatActivity implements View.OnClickListen
         if (storageReference != null) {
 
             imageList = new ArrayList();
-            final String acaPicName[] = new String[6];
+            final String[] acaPicName = new String[6];
             String userName = SharedManager.read(SharedManager.USER_NAME,"");
             String fileName = userName + postModel.getDate();
 

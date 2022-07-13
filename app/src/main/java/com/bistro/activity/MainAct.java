@@ -121,7 +121,6 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
             SharedManager.write(today, "");  // 오늘 (새로운 날짜) 저장
         }
 
-        Toast.makeText(_Main_Activity, SharedManager.read(SharedManager.WRITE_COUNT, ""), Toast.LENGTH_SHORT).show();
 
         BottomNavigationView bottom_menu = findViewById(R.id.bottom_menu);
         bottom_menu.setOnItemSelectedListener(item -> {
@@ -148,7 +147,8 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-    private void initLocation() {
+    private void initLocation()
+    {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         mLocationCallback = new LocationCallback() {
             @Override
@@ -190,7 +190,6 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
                     mLocationCallback,
                     Looper.getMainLooper());
         }
-
     }
 
     private void stopLocationUpdates() {

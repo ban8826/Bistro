@@ -6,9 +6,7 @@
     android:layout_height="match_parent">
 
 
-
     // 중간 스크롤뷰
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"

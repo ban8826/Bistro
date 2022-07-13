@@ -105,8 +105,27 @@
                     app:layout_constraintTop_toTopOf="@id/tv_nickName"
                     app:layout_constraintBottom_toBottomOf="@id/tv_nickName"
                     app:layout_constraintLeft_toRightOf="@id/tv_nickName"
-                    app:layout_constraintRight_toRightOf="parent"/>
+                    app:layout_constraintRight_toLeftOf="@id/iv_right_arrow"/>
 
+                <ImageView
+                    android:layout_width="@dimen/forty"
+                    android:layout_height="40dp"
+                    android:id="@+id/iv_right_arrow"
+                    android:src="@drawable/arrow_right"
+                    android:layout_marginRight="@dimen/twenty"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/eighty"
+                android:id="@+id/const_count_like"
+                app:layout_constraintTop_toBottomOf="@id/const_profile"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -115,11 +134,12 @@
                     android:text="* 받은 공감수 : "
                     android:textColor="@color/black"
                     android:textSize="@dimen/fifteen"
+                    android:layout_marginLeft="@dimen/twenty"
                     android:layout_marginTop="@dimen/thirty"
                     android:layout_marginBottom="@dimen/thirty"
-                    app:layout_constraintTop_toBottomOf="@id/tv_nickName"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="@id/tv_nickName"/>
+                    app:layout_constraintLeft_toLeftOf="parent"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -129,11 +149,9 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/fifteen"
                     android:layout_marginLeft="@dimen/five"
-                    app:layout_constraintTop_toBottomOf="@id/tv_nickName"
+                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/tv_like"/>
-
-
 
                 <View
                     android:layout_width="match_parent"
@@ -141,20 +159,21 @@
                     android:background="@color/gray_light2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            // 공감순위 콘스트
+            // 동네인증 하기
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:id="@+id/const_rank"
-                app:layout_constraintTop_toBottomOf="@id/const_profile"
+                android:id="@+id/const_verify"
+                app:layout_constraintTop_toBottomOf="@id/const_count_like"
                 app:layout_constraintLeft_toLeftOf="parent">
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/tv_rank"
-                    android:text="내 공감"
+                    android:id="@+id/tv_verify"
+                    android:text="동네인증 하기"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/twentyFive"
                     android:textColor="@color/black"
@@ -174,7 +193,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:id="@+id/const_event"
-                app:layout_constraintTop_toBottomOf="@id/const_rank"
+                app:layout_constraintTop_toBottomOf="@id/const_verify"
                 app:layout_constraintLeft_toLeftOf="parent">
                 <TextView
                     android:layout_width="match_parent"

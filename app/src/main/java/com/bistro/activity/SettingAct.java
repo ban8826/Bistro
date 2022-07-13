@@ -29,7 +29,7 @@ public class SettingAct extends AppCompatActivity implements View.OnClickListene
     private void setInitialize() {
         SharedManager.init(getApplicationContext());
         findViewById(R.id.btn_back)  .setOnClickListener(this);
-        findViewById(R.id.btn_logout).setOnClickListener(this);
+//        findViewById(R.id.btn_logout).setOnClickListener(this);
     }
 
     @Override
@@ -40,10 +40,10 @@ public class SettingAct extends AppCompatActivity implements View.OnClickListene
                 finish();
                 break;
 
-            case R.id.btn_logout:
-                // 로그 아웃
-                setLogout();
-                break;
+//            case R.id.btn_logout:
+//                // 로그 아웃
+//                setLogout();
+
         }
     }
 
