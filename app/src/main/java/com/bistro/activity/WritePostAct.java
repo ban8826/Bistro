@@ -34,8 +34,11 @@ import com.bistro.database.SharedManager;
 import com.bistro.model.PostModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.UploadTask;
@@ -55,7 +58,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private DatabaseReference
             mDatabaseRef;
     private Context context;
-    private String storeAddress , strName;
+    private String storeAddress , strName, randomKey;
     private InputMethodManager imm;
     private RetrofitMain retrofitMain;
     private TextView tv_complete, tv_search_store;  // 작성완료 텍스트 버튼
@@ -69,6 +72,8 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
     private RecyclerView rv_images;
     private PictureAdapter pictureAdapter;
     private ArrayList<Uri> listImages;
+    private ArrayList<PostModel> todayList;
+    private boolean todayCheck;
 
     private KakaoPlaceModel.PoiPlace mPoiPlace;
 
@@ -89,9 +94,12 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
         imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
         listImages = new ArrayList<>();
 
+        todayList = new ArrayList<>();  //  오늘 작성한 상점리스트 담는 변수
         layoutAddress = findViewById(R.id.a_write_post_layout_address);
         mapView = findViewById(R.id.a_write_post_map);
 
+        randomKey = SharedManager.read(SharedManager.AUTH_TOKEN,""); // 파베 랜덤키, 내 계정으로 갈수있는
+        todayCheck = false;
         tv_complete = findViewById(R.id.btn_complete);
         et_title = findViewById(R.id.a_write_post_et_title);
         et_search_store = findViewById(R.id.a_write_post_et_name);   // 맛집 검색뒤 맛집이름 들어오는 텍스트뷰
@@ -180,6 +188,8 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_complete:
                 // 작성완료
 
+                todayCheck = false;  // 주소만 바꿔서 다시 작성할경우를 위해 다시 false로.
+
                 String strTitle = et_title.getText().toString();
                 String strContent = et_content.getText().toString();
                 String strMenu = et_menu.getText().toString();
@@ -193,84 +203,114 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
 
-                // check current login mode
-                int loginType = SharedManager.read(SharedManager.LOGIN_TYPE, -1);
+                mDatabaseRef.child("userInfo").child(randomKey).child("todayList").orderByChild("date").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        todayList.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren())
+                        {
+                            if(dataSnapshot.getChildrenCount() != 0)
+                            { PostModel postModel = dataSnapshot.getValue(PostModel.class);
+                                todayList.add(postModel); }
+                        }
+
+                        /**  오늘 같은 상점 작성했는지 확인. true면 작성했다는 뜻   **/
+                        for(PostModel postModel : todayList)
+                        {
+                            if(postModel.getAddress().equals(storeAddress)) {todayCheck =  true; break;}
+                        }
+
+                        /** 오늘 상점에 대해 최초 작성.   글 작성 가능  **/
+                        if (!todayCheck)
+                        {
+                            // check current login mode
+                            int loginType = SharedManager.read(SharedManager.LOGIN_TYPE, -1);
 //                if (loginType == -1)
 //                    Toast.makeText(this, "로그인 정보가 없습니다\n앱을 재실행하여 로그인 해주세요", Toast.LENGTH_SHORT).show();
 
-                String strCurrentDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
-                String strNickName = SharedManager.read(SharedManager.USER_NAME,"");
-                String strAuthToken = SharedManager.read(SharedManager.AUTH_TOKEN,"");
-                String strFcmToken = SharedManager.read(SharedManager.FCM_TOKEN, "");
-                String strPostId = strAuthToken + "_" + strCurrentDate; // (중요 !) 게시글 아이디는 (로그인 토큰 + "_" + 디바이스기준현지시간) 으로 정의한다.
-                String userId = SharedManager.read(SharedManager.LOGIN_ID, "");
+                            String strCurrentDate = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+                            String strNickName = SharedManager.read(SharedManager.USER_NAME,"");
+                            String strAuthToken = SharedManager.read(SharedManager.AUTH_TOKEN,"");
+                            String strFcmToken = SharedManager.read(SharedManager.FCM_TOKEN, "");
+                            String strPostId = strAuthToken + "_" + strCurrentDate; // (중요 !) 게시글 아이디는 (로그인 토큰 + "_" + 디바이스기준현지시간) 으로 정의한다.
+                            String userId = SharedManager.read(SharedManager.LOGIN_ID, "");
 
-                // create post model
-                PostModel postModel = new PostModel();
-                postModel.setTitle(strTitle);
-                postModel.setNickName(strNickName);
-                postModel.setStoreName(strName);
-                postModel.setContent(strContent);
-                postModel.setDate(strCurrentDate);
-                postModel.setAuthToken(strAuthToken);
-                postModel.setFcmToken(strFcmToken);
-                postModel.setAddress(storeAddress);  // 식당 주소 ('맛집검색'으로 부터 받는 )
-                postModel.setId(strPostId);    // 게시글의 유니크한 ID
-                postModel.setUserId(userId);   // 사용자 로그인 ID
-                postModel.setMenu(strMenu);
-                postModel.setClick("1");   // 조회수
-                postModel.setLike("0");    // 공감수
-                postModel.setPoiPlace(mPoiPlace);
+                            // create post model
+                            PostModel postModel = new PostModel();
+                            postModel.setTitle(strTitle);
+                            postModel.setNickName(strNickName);
+                            postModel.setStoreName(strName);
+                            postModel.setContent(strContent);
+                            postModel.setDate(strCurrentDate);
+                            postModel.setAuthToken(strAuthToken);
+                            postModel.setFcmToken(strFcmToken);
+                            postModel.setAddress(storeAddress);  // 식당 주소 ('맛집검색'으로 부터 받는 )
+                            postModel.setId(strPostId);    // 게시글의 유니크한 ID
+                            postModel.setUserId(userId);   // 사용자 로그인 ID
+                            postModel.setMenu(strMenu);
+                            postModel.setClick("1");   // 조회수
+                            postModel.setLike("0");    // 공감수
+                            postModel.setPoiPlace(mPoiPlace);
 
-                mDatabaseRef.child("postInfo").child(strPostId).setValue(postModel);
+                            // userInfo의 todayList 에 넣을 모델. 상점주소와 날짜만 기록
+                            PostModel modelToday = new PostModel();
+                            modelToday.setDate(strCurrentDate);
+                            modelToday.setAddress(storeAddress);
 
-                /** 글쓰는 횟수 +1 하고 쉐어드에 저장하는 부분 **/
-                int count =  Integer.parseInt( SharedManager.read(SharedManager.WRITE_COUNT,"") );
-                // 글쓰기 카운트 1회 추가
-                count += 1;
-                SharedManager.write(SharedManager.WRITE_COUNT, String.valueOf(count));
+                            mDatabaseRef.child("postInfo").child(strPostId).setValue(postModel);
 
-                final ProgressDialog progressDialog = new ProgressDialog(WritePostAct.this);
-                progressDialog.setTitle("업로드중...");
-                progressDialog.show();
-
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                String[] picName = new String [6];
-
-                /** 이미지파일 이름 **/
-                picName[0] = strNickName + '1';
-                picName[1] = strNickName + '2';
-                picName[2] = strNickName + '3';
-                picName[3] = strNickName + '4';
-                picName[4] = strNickName + '5';
-                picName[5] = strNickName + '6';
+                            // 내정보에 오늘 글 작성했음을 확인하는 글 저장
+                            mDatabaseRef.child("userInfo").child(randomKey).child("todayList").push().setValue(modelToday);
 
 
-                String imgFolderName = strNickName + strCurrentDate; // 유저 닉네임과 일시를 합쳐서 이미지 폴더이름 생성
+                            /** 글쓰는 횟수 +1 하고 쉐어드에 저장하는 부분 **/
+                            int count =  Integer.parseInt( SharedManager.read(SharedManager.WRITE_COUNT,"") );
+                            // 글쓰기 카운트 1회 추가
+                            count += 1;
+                            SharedManager.write(SharedManager.WRITE_COUNT, String.valueOf(count));
 
-                for(int i=0; i<listImages.size(); i++) {
+                            final ProgressDialog progressDialog = new ProgressDialog(WritePostAct.this);
+                            progressDialog.setTitle("업로드중...");
+                            progressDialog.show();
 
+                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                            String[] picName = new String [6];
 
-                    /** 여기서 else 문을 만들어서 이미지를 아무것도 선택하지 않을경우를 만들어서
-                     *  listFragment에서 Storage에서 이미지를 가져올떄
-                     */
-                    if(listImages.get(i) != null)
-                    {
-
-                        //storage 주소와 폴더 파일명을 지정해 준다.
-                        //        storage.getReferenceFromUrl("gs://arcademy-241eb.appspot.com").child("aca_ad_images/" + pictureName).putFile(filePath)
-                        storage.getReferenceFromUrl("gs://bistro-5bc79.appspot.com").child(imgFolderName).child(picName[i]).putFile(listImages.get(i))
-                                //성공시
-                                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-                                    {
-
-                                        /**     이미지 업로드 완료    **/
-                                        progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
+                            /** 이미지파일 이름 **/
+                            picName[0] = strNickName + '1';
+                            picName[1] = strNickName + '2';
+                            picName[2] = strNickName + '3';
+                            picName[3] = strNickName + '4';
+                            picName[4] = strNickName + '5';
+                            picName[5] = strNickName + '6';
 
 
-                                        finish();
+                            String imgFolderName = strNickName + strCurrentDate; // 유저 닉네임과 일시를 합쳐서 이미지 폴더이름 생성
+
+                            for(int i=0; i<listImages.size(); i++)
+                            {
+
+
+                                /** 여기서 else 문을 만들어서 이미지를 아무것도 선택하지 않을경우를 만들어서
+                                 *  listFragment에서 Storage에서 이미지를 가져올떄
+                                 */
+                                if(listImages.get(i) != null)
+                                {
+
+                                    //storage 주소와 폴더 파일명을 지정해 준다.
+                                    //        storage.getReferenceFromUrl("gs://arcademy-241eb.appspot.com").child("aca_ad_images/" + pictureName).putFile(filePath)
+                                    storage.getReferenceFromUrl("gs://bistro-5bc79.appspot.com").child(imgFolderName).child(picName[i]).putFile(listImages.get(i))
+                                            //성공시
+                                            .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+                                                {
+
+                                                    /**     이미지 업로드 완료    **/
+                                                    progressDialog.dismiss(); //업로드 진행 Dialog 상자 닫기
+
+
+                                                    finish();
 
 
 //                                        final DialogUseful dialogUseful = new DialogUseful("ad_complete",AdRequestBossAct.this);
@@ -287,27 +327,37 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
 //                                        });
 //                                        dialogUseful.show();
 
-                                    }
-                                })
-                                //실패시
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        progressDialog.dismiss();
-                                    }
-                                })
-                                //진행중
-                                .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                    @Override
-                                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                                                }
+                                            })
+                                            //실패시
+                                            .addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    progressDialog.dismiss();
+                                                }
+                                            })
+                                            //진행중
+                                            .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                        double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-                                        //dialog에 진행률을 퍼센트로 출력해 준다
-                                        progressDialog.setMessage("Uploaded " + ((int) progress) + "% ...");
-                                    }
-                                });
+                                                    double progress = (100 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+                                                    //dialog에 진행률을 퍼센트로 출력해 준다
+                                                    progressDialog.setMessage("Uploaded " + ((int) progress) + "% ...");
+                                                }
+                                            });
+                                }
+                            } // for문 끝나는 블락
+                        }
+                        /**  오늘 상점에 대해 이미 작성.   글 작성 불가능   **/
+                        else
+                        {
+                            Toast.makeText(context, "이미 같은 상점에 대한 글을 작성했습니다. 1개의 상점에 대해 하루에 1번만 글을 게시할 수 있습니다", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                } // for문 끝나는 블락
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }});
+
                 break;
 
 
@@ -339,6 +389,7 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                         String strRoadAddress = place.getRoad_address_name();
 
                         layoutAddress.setVisibility(View.VISIBLE);
+
                         if (strRoadAddress.equals("")) {
                             et_address.setText(strAddress);
                             storeAddress = strAddress;
@@ -346,6 +397,8 @@ public class WritePostAct extends AppCompatActivity implements View.OnClickListe
                             et_address.setText(strRoadAddress);
                             storeAddress = strRoadAddress;
                         }
+
+                        Toast.makeText(context, storeAddress, Toast.LENGTH_SHORT).show();
 
                         mapView.setVisibility(View.VISIBLE);
                         mapView.getMapAsync(naverMap -> {

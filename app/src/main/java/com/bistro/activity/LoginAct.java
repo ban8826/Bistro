@@ -26,6 +26,7 @@ import com.kakao.sdk.user.model.Profile;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * summary 로그인 화면
@@ -112,6 +113,13 @@ public class LoginAct extends AppCompatActivity implements View.OnClickListener 
                             SharedManager.write(SharedManager.FCM_TOKEN, userModel.getFcmToken());
                             SharedManager.write(SharedManager.USER_NAME, userModel.getName());
                             SharedManager.write(SharedManager.PROFILE_STORAGE_PATH, userModel.getProfileImgPath());
+
+                            SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+                            Date currentTime = new Date();
+                            String today = mSimpleDateFormat.format(currentTime);
+                            // 로그인시 오늘 날짜 저장.
+                            SharedManager.write(SharedManager.TODAY, today);
+
                         }
 
                         // move activity to MainAct

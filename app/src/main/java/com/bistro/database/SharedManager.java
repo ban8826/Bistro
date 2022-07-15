@@ -16,12 +16,12 @@ public class SharedManager
     private static SharedPreferences mSharedPref;
     public static final String LOGIN_TYPE            = "LOGIN_TYPE";            // 현재 로그인 한 TYPE (파베로그인 0, 카카오 로그인 1)
     public static final String LOGIN_ID              = "LOGIN_ID";              // 현재 로그인 한 ID Token
-    public static final String AUTH_TOKEN            = "AUTH_TOKEN";            // 현재 ID Token 값 (파베 로그인인 경우 Uid, 카카오 로그인인 경우 자체 토큰)
+    public static final String AUTH_TOKEN            = "AUTH_TOKEN";            // 파베에서 랜덤키, 현재 ID Token 값 (파베 로그인인 경우 Uid, 카카오 로그인인 경우 자체 토큰)
     public static final String USER_NAME             = "USER_NAME";             // 현재 로그인 한 닉네임
     public static final String FCM_TOKEN             = "FCM_TOKEN";             // 로그인이 될 때마다 새롭게 받아오는 FCM Token 데이터이다.
     public static final String PROFILE_STORAGE_PATH  = "PROFILE_STORAGE_PATH";  // 이미지 저장 경로 (Firebase Storage)
     public static final String WRITE_COUNT           = "WRITE_COUNT";
-    public static final String TODAY                 = "TODAY";
+    public static final String TODAY                 = "TODAY";                 // 오늘 날짜 저장 (같은 상점은 하루에 글 1개 작성을 위해)
 
     private SharedManager() { }
 

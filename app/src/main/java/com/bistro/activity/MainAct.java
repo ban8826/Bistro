@@ -34,10 +34,13 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.bistro.util.MidnightReceiver;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class MainAct extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = "MainAct";
@@ -45,7 +48,7 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
     private FusedLocationProviderClient mFusedLocationClient;
     private LocationCallback mLocationCallback;
     private LocationRequest mLocationRequest;
-
+    private DatabaseReference databaseReference;
     private RetrofitMain retrofitMain;
 
     // test comment
@@ -87,6 +90,7 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
 
     private void init() {
         initLocation();
+        databaseReference = FirebaseDatabase.getInstance().getReference("bistro");
         retrofitMain = new RetrofitMain(this);
         retrofitMain.setResultListener(new RetrofitMain.ResultListener() {
             @Override
@@ -293,5 +297,21 @@ public class MainAct extends AppCompatActivity implements View.OnClickListener {
         Log.d(TAG, "onResume !");
 
         startLocationUpdates();
+
+        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+        Date currentTime = new Date();
+        String randomKey = SharedManager.read(SharedManager.AUTH_TOKEN,"");
+        String today = mSimpleDateFormat.format(currentTime);
+        String savedDate = SharedManager.read(SharedManager.TODAY,"");
+
+        /**   하루지남 (오늘 작성한 데이터 삭제, 날짜  업데이트)   **/
+        if(!today.equals(savedDate))
+        {
+            // 내정보 todayList 부분 삭제
+            databaseReference.child("userInfo").child(randomKey).child("todayList").setValue(null);
+            // 쉐어드에 오늘 날짜 업데이트
+            SharedManager.write(SharedManager.TODAY, today);
+        }
+
     }
 }

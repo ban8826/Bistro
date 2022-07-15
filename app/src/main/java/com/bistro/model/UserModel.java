@@ -8,10 +8,12 @@ public class UserModel {
     private String pwd;
     private String profileImgPath;  // 프로필 이미지 경로
     private String fcmToken;        // 사용자 푸시토큰
-    private String authToken;       // 계정토큰
+    private String authToken;       // 파베에서 랜덤키, 계정토큰
     private String area;            // 동네 인증 정보
     private String introduce;       // 자기소개 한마디, 칭호
     private HashMap<String, PostModel> favorite;
+    private HashMap<String, PostModel> todayList; // 내가 오늘 작성한 글리시트(하루에 같은 상점에 같은 글 못쓰도록 하기위함)
+
     private String like;
     private String hobby;
     public UserModel() { }
@@ -64,6 +66,13 @@ public class UserModel {
         this.favorite = favorite;
     }
 
+    public void setTodayList(HashMap<String, PostModel> todayList) {
+        this.todayList = todayList;
+    }
+
+    public HashMap<String, PostModel> getTodayList() {
+        return todayList;
+    }
 
     public HashMap<String, PostModel> getFavorite() {
         return favorite;
